@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Gift, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Gift, Sparkles, PartyPopper, Clock, Lightbulb } from 'lucide-react';
 import { Question } from '@/data/questions';
 
 interface QuestionCardProps {
@@ -7,28 +7,125 @@ interface QuestionCardProps {
   onNext: () => void;
   remaining: number;
   total: number;
+  currentPlayer: string;
 }
 
 const categoryColors: Record<Question['category'], string> = {
-  'Riddle': 'from-amber-600 to-amber-700',
-  'Family & Memories': 'from-rose-600 to-rose-700',
-  'Task/Action': 'from-emerald-600 to-emerald-700',
+  'Raadsel': 'from-amber-600 to-amber-700',
+  'Familie & Herinneringen': 'from-rose-600 to-rose-700',
+  'Taak/Actie': 'from-emerald-600 to-emerald-700',
   'Dilemma': 'from-purple-600 to-purple-700',
-  'Reflection': 'from-sky-600 to-sky-700',
+  'Reflectie': 'from-sky-600 to-sky-700',
 };
 
-const QuestionCard = ({ question, onNext, remaining, total }: QuestionCardProps) => {
+const QuestionCard = ({
+  question,
+  onNext,
+  remaining,
+  total,
+  currentPlayer,
+}: QuestionCardProps) => {
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [actionDuration, setActionDuration] = useState(25);
+  const [actionTimeLeft, setActionTimeLeft] = useState(25);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [revealedIndices, setRevealedIndices] = useState<number[]>([]);
+
+  const isAction = question.category === 'Taak/Actie';
+  const isRiddleWithAnswer = question.category === 'Raadsel' && !!question.answer;
 
   const handleNext = () => {
     setShowAnswer(false);
+    setShowConfetti(false);
+    setTimerRunning(false);
     onNext();
   };
 
   const hasAnswer = !!question.answer;
 
+  // Reset per vraag
+  useEffect(() => {
+    setShowAnswer(false);
+    setShowConfetti(false);
+    const newDuration = Math.floor(Math.random() * 11) + 20; // 20-30s
+    setActionDuration(newDuration);
+    setActionTimeLeft(newDuration);
+    setTimerRunning(false);
+    setRevealedIndices([]);
+  }, [question.id]);
+
+  // Timer tick
+  useEffect(() => {
+    if (!timerRunning) return;
+    if (!isAction) return;
+    if (actionTimeLeft <= 0) {
+      setTimerRunning(false);
+      return;
+    }
+    const interval = setInterval(() => {
+      setActionTimeLeft((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timerRunning, actionTimeLeft, isAction]);
+
+  const handleStartTimer = () => {
+    if (!isAction) return;
+    setActionTimeLeft(actionDuration);
+    setTimerRunning(true);
+  };
+
+  const handleStopTimer = () => {
+    setTimerRunning(false);
+  };
+
+  const handleSuccess = () => {
+    setTimerRunning(false);
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 2000);
+  };
+
+  const handleRevealHint = () => {
+    if (!question.answer) return;
+    const chars = question.answer.split('');
+    const eligible = chars
+      .map((char, idx) => ({ char, idx }))
+      .filter(({ char, idx }) => !revealedIndices.includes(idx) && /[A-Za-z0-9]/.test(char));
+    if (eligible.length === 0) return;
+    const random = eligible[Math.floor(Math.random() * eligible.length)];
+    setRevealedIndices((prev) => [...prev, random.idx]);
+  };
+
+  const getHintText = () => {
+    if (!question.answer) return '';
+    const chars = question.answer.split('');
+    return chars
+      .map((char, idx) => {
+        if (!/[A-Za-z0-9]/.test(char)) return char;
+        return revealedIndices.includes(idx) ? char : '•';
+      })
+      .join('');
+  };
+
   return (
     <div className="christmas-card rounded-2xl p-8 md:p-12 max-w-3xl w-full mx-4 relative">
+      {showConfetti && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          {Array.from({ length: 18 }).map((_, i) => (
+            <span
+              key={i}
+              className="confetti-piece"
+              style={{
+                left: `${(i / 18) * 100}%`,
+                animationDelay: `${i * 0.05}s`,
+              }}
+            >
+              🎉
+            </span>
+          ))}
+        </div>
+      )}
+
       {/* Decorative corners */}
       <div className="absolute top-4 left-4 text-2xl opacity-20">🎄</div>
       <div className="absolute top-4 right-4 text-2xl opacity-20">⭐</div>
@@ -37,7 +134,7 @@ const QuestionCard = ({ question, onNext, remaining, total }: QuestionCardProps)
 
       {/* Remaining counter */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 text-sm text-card-foreground/60 font-medium">
-        {remaining} of {total} remaining
+        {remaining} van {total} over
       </div>
 
       {/* Category badge */}
@@ -46,6 +143,71 @@ const QuestionCard = ({ question, onNext, remaining, total }: QuestionCardProps)
           {question.category}
         </span>
       </div>
+
+      {/* Player */}
+      <div className="flex justify-center mb-4">
+        <span className="px-4 py-2 rounded-full bg-foreground/10 text-card-foreground text-sm font-semibold">
+          🎄 {currentPlayer} is aan de beurt
+        </span>
+      </div>
+
+      {/* Action timer */}
+      {isAction && (
+        <div className="mb-6 flex flex-col items-center gap-3">
+          <div className="flex items-center gap-2 text-card-foreground/80">
+            <Clock className="w-4 h-4" />
+            <span className="text-sm">Timer: {actionTimeLeft}s</span>
+            <span className="text-xs text-card-foreground/60">(tussen 20-30s, random)</span>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={handleStartTimer}
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground hover:opacity-90 transition-colors"
+            >
+              Start timer ({actionDuration}s)
+            </button>
+            <button
+              onClick={handleStopTimer}
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-card-foreground/10 text-card-foreground hover:bg-card-foreground/15 transition-colors"
+            >
+              Stop
+            </button>
+            <button
+              onClick={handleSuccess}
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:opacity-90 transition-colors flex items-center gap-2"
+            >
+              <PartyPopper className="w-4 h-4" />
+              Geslaagd
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Riddle hint */}
+      {isRiddleWithAnswer && (
+        <div className="mb-6 flex flex-col items-center gap-2">
+          <div className="text-sm text-card-foreground/70 flex items-center gap-2">
+            <Lightbulb className="w-4 h-4" />
+            <span>Hint nodig? Onthul een letter</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleRevealHint}
+              disabled={question.answer ? revealedIndices.length >= question.answer.replace(/[^A-Za-z0-9]/g, '').length : true}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-colors ${
+                question.answer && revealedIndices.length < question.answer.replace(/[^A-Za-z0-9]/g, '').length
+                  ? 'bg-card-foreground/10 text-card-foreground hover:bg-card-foreground/15'
+                  : 'bg-card-foreground/5 text-card-foreground/40 cursor-not-allowed'
+              }`}
+            >
+              Geef hint
+            </button>
+            <span className="font-display text-lg text-card-foreground tracking-wide">
+              {getHintText()}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Question */}
       <div className="text-center mb-8">
@@ -62,7 +224,7 @@ const QuestionCard = ({ question, onNext, remaining, total }: QuestionCardProps)
             className="btn-christmas-gold flex items-center gap-2 text-lg"
           >
             <Gift className="w-5 h-5" />
-            Reveal Answer 🎁
+            Toon Antwoord 🎁
           </button>
         </div>
       )}
@@ -71,7 +233,7 @@ const QuestionCard = ({ question, onNext, remaining, total }: QuestionCardProps)
         <div className="answer-reveal text-center mb-6">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Sparkles className="w-5 h-5 text-christmas-gold" />
-            <span className="font-semibold text-card-foreground/70 uppercase text-sm tracking-wide">Answer</span>
+            <span className="font-semibold text-card-foreground/70 uppercase text-sm tracking-wide">Antwoord</span>
             <Sparkles className="w-5 h-5 text-christmas-gold" />
           </div>
           <p className="font-display text-xl md:text-2xl text-card-foreground">
@@ -83,7 +245,7 @@ const QuestionCard = ({ question, onNext, remaining, total }: QuestionCardProps)
       {!hasAnswer && (
         <div className="text-center mb-6 p-4 rounded-xl bg-card-foreground/5">
           <p className="text-card-foreground/60 italic">
-            ✨ This question has no fixed answer. Anything heartfelt or funny counts! ✨
+            ✨ Deze vraag heeft geen vast antwoord. Alles wat oprecht of grappig is, telt! ✨
           </p>
         </div>
       )}
@@ -94,7 +256,7 @@ const QuestionCard = ({ question, onNext, remaining, total }: QuestionCardProps)
           onClick={handleNext}
           className="btn-christmas-green text-lg flex items-center gap-2"
         >
-          Next Question
+          Volgende Vraag
           <span className="text-xl">→</span>
         </button>
       </div>

@@ -13,20 +13,20 @@ const Header = ({ onOpenSettings }: HeaderProps) => {
         <Snowflake className="w-6 h-6 text-foreground/80 animate-pulse" />
       </div>
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-2 drop-shadow-lg">
-        Christmas Eve
+        Kerstavond
       </h1>
       <p className="font-display text-2xl md:text-3xl text-christmas-gold">
-        Family Game
+        Familiespel
       </p>
       <p className="text-foreground/60 mt-2 text-sm">
-        ✨ Questions, riddles & fun for the whole family ✨
+        ✨ Vragen, raadsels & plezier voor het hele gezin ✨
       </p>
       
       {/* Settings button */}
       <button
         onClick={onOpenSettings}
         className="absolute top-4 right-4 p-2 rounded-full bg-foreground/10 hover:bg-foreground/20 transition-colors"
-        aria-label="Settings"
+        aria-label="Instellingen"
       >
         <Settings2 className="w-5 h-5 text-foreground/70" />
       </button>
