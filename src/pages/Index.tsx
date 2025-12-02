@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { questions, shuffleArray, Question } from '@/data/questions';
+import { getQuestions, shuffleArray, Question } from '@/data/questions';
 import Snowflakes from '@/components/Snowflakes';
 import Header from '@/components/Header';
 import QuestionCard from '@/components/QuestionCard';
@@ -7,6 +7,8 @@ import SettingsPanel from '@/components/SettingsPanel';
 import PlayerSpotlight from '@/components/PlayerSpotlight';
 import GiftTracker from '@/components/GiftTracker';
 import LootBoxModal from '@/components/LootBoxModal';
+import { Language } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
 
 type Player = {
   name: string;
@@ -27,26 +29,40 @@ const Index = () => {
   ]);
   const [maxGifts, setMaxGifts] = useState(3);
   const [remainingQuestions, setRemainingQuestions] = useState<Question[]>([]);
+  const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [theme, setTheme] = useState<'christmas' | 'winter'>('christmas');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const [language, setLanguage] = useState<Language>('nl');
   const [lootBoxReward, setLootBoxReward] = useState<{ player: string; message: string } | null>(null);
 
-  const rewardMessages = [
-    'Pak een klein pakje',
-    'Pak een groot pakje',
-    'Jij mag iemand anders een pakje laten pakken',
-    'Kies een pakje en geef het door aan iemand naar keuze',
-    'Pak een pakje en wissel van stoel met iemand',
-    'Pak een pakje, maar open het pas na 1 minuut',
-  ];
+  const rewardMessages: Record<Language, string[]> = {
+    nl: [
+      'Pak een klein pakje',
+      'Pak een groot pakje',
+      'Jij mag iemand anders een pakje laten pakken',
+      'Kies een pakje en geef het door aan iemand naar keuze',
+      'Pak een pakje en wissel van stoel met iemand',
+      'Pak een pakje, maar open het pas na 1 minuut',
+    ],
+    en: [
+      'Pick a small present',
+      'Pick a big present',
+      'Let someone else take a present',
+      'Pick a present and pass it to anyone you choose',
+      'Pick a present and swap seats with someone',
+      'Pick a present but open it after 1 minute',
+    ],
+  };
 
   const initializeQuestions = useCallback(() => {
-    const shuffled = shuffleArray(questions);
+    const bank = getQuestions(language);
+    const shuffled = shuffleArray(bank);
+    setTotalQuestions(bank.length);
     setCurrentQuestion(shuffled[0]);
     setRemainingQuestions(shuffled.slice(1));
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     initializeQuestions();
@@ -126,7 +142,8 @@ const Index = () => {
       });
 
       if (!skipLoot) {
-        const randomMessage = rewardMessages[Math.floor(Math.random() * rewardMessages.length)];
+        const pool = rewardMessages[language] || rewardMessages.nl;
+        const randomMessage = pool[Math.floor(Math.random() * pool.length)];
         setLootBoxReward({ player: target.name, message: randomMessage });
       }
 
@@ -179,7 +196,7 @@ const Index = () => {
   if (!currentQuestion) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-foreground text-xl animate-pulse">Laden...</div>
+        <div className="text-foreground text-xl animate-pulse">{t(language, 'loading')}</div>
       </div>
     );
   }
@@ -188,12 +205,16 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Snowflakes />
       
-      <Header onOpenSettings={() => setSettingsOpen(true)} />
+      <Header
+        onOpenSettings={() => setSettingsOpen(true)}
+        language={language}
+      />
 
       <div className="px-4">
         <PlayerSpotlight
           players={players.map(player => ({ ...player, maxGifts }))}
           activeIndex={currentPlayerIndex}
+          language={language}
         />
         <GiftTracker
           players={players}
@@ -203,6 +224,7 @@ const Index = () => {
           onRemove={(index) => handleRemoveGift(index)}
           onSkip={(index) => handleUseSkip(index)}
           onJoker={(index) => handleUseJoker(index)}
+          language={language}
         />
       </div>
 
@@ -211,14 +233,16 @@ const Index = () => {
           question={currentQuestion}
           onNext={handleNextQuestion}
           remaining={remainingQuestions.length + 1}
-          total={questions.length}
+          total={totalQuestions || remainingQuestions.length + 1}
           currentPlayer={players[currentPlayerIndex].name}
+          language={language}
         />
       </main>
 
       <LootBoxModal
         reward={lootBoxReward}
         onClose={() => setLootBoxReward(null)}
+        language={language}
       />
 
         <SettingsPanel
@@ -229,6 +253,8 @@ const Index = () => {
           onToggleTheme={toggleTheme}
           maxGifts={maxGifts}
           onMaxChange={handleAdjustMaxGifts}
+          language={language}
+          onLanguageChange={setLanguage}
           players={players}
           onPlayerNameChange={handlePlayerNameChange}
           onPlayerAdd={handlePlayerAdd}

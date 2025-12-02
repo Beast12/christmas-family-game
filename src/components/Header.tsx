@@ -1,10 +1,12 @@
 import { TreePine, Snowflake, Settings2 } from 'lucide-react';
+import { Language, t } from '@/lib/i18n';
 
 interface HeaderProps {
   onOpenSettings: () => void;
+  language: Language;
 }
 
-const Header = ({ onOpenSettings }: HeaderProps) => {
+const Header = ({ onOpenSettings, language }: HeaderProps) => {
   return (
     <header className="text-center py-8 relative">
       <div className="flex items-center justify-center gap-3 mb-2">
@@ -13,13 +15,13 @@ const Header = ({ onOpenSettings }: HeaderProps) => {
         <Snowflake className="w-6 h-6 text-foreground/80 animate-pulse" />
       </div>
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-2 drop-shadow-lg">
-        Kerstavond
+        {language === 'nl' ? 'Kerstavond' : 'Christmas Eve'}
       </h1>
       <p className="font-display text-2xl md:text-3xl text-christmas-gold">
-        Familiespel
+        {language === 'nl' ? 'Familiespel' : 'Family Game'}
       </p>
       <p className="text-foreground/60 mt-2 text-sm">
-        ✨ Vragen, raadsels & plezier voor het hele gezin ✨
+        {language === 'nl' ? '✨ Vragen, raadsels & plezier voor het hele gezin ✨' : '✨ Questions, riddles & fun for the whole family ✨'}
       </p>
       
       {/* Settings button */}

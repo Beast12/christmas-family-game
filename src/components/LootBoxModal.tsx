@@ -1,11 +1,13 @@
 import { Gift } from 'lucide-react';
+import { Language, t } from '@/lib/i18n';
 
 interface LootBoxModalProps {
   reward: { player: string; message: string } | null;
   onClose: () => void;
+  language: Language;
 }
 
-const LootBoxModal = ({ reward, onClose }: LootBoxModalProps) => {
+const LootBoxModal = ({ reward, onClose, language }: LootBoxModalProps) => {
   if (!reward) return null;
 
   return (
@@ -17,15 +19,15 @@ const LootBoxModal = ({ reward, onClose }: LootBoxModalProps) => {
             🎁
           </div>
         </div>
-        <p className="text-sm text-card-foreground/60">Voor {reward.player}</p>
-        <h3 className="font-display text-2xl text-card-foreground mb-2">Cadeaukaart</h3>
+        <p className="text-sm text-card-foreground/60">{t(language, 'rewardFor')} {reward.player}</p>
+        <h3 className="font-display text-2xl text-card-foreground mb-2">{t(language, 'rewardCard')}</h3>
         <p className="text-card-foreground/80 mb-4">{reward.message}</p>
         <button
           onClick={onClose}
           className="w-full px-4 py-3 rounded-lg font-semibold bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground hover:opacity-90 transition-colors flex items-center justify-center gap-2"
         >
           <Gift className="w-4 h-4" />
-          Pak je cadeau
+          {t(language, 'rewardCta')}
         </button>
       </div>
     </div>

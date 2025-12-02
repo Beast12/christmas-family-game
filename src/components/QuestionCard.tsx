@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Gift, Sparkles, PartyPopper, Clock, Lightbulb } from 'lucide-react';
 import { Question } from '@/data/questions';
+import { Language, t } from '@/lib/i18n';
 
 interface QuestionCardProps {
   question: Question;
@@ -8,6 +9,7 @@ interface QuestionCardProps {
   remaining: number;
   total: number;
   currentPlayer: string;
+  language: Language;
 }
 
 const categoryColors: Record<Question['category'], string> = {
@@ -24,6 +26,7 @@ const QuestionCard = ({
   remaining,
   total,
   currentPlayer,
+  language,
 }: QuestionCardProps) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -134,7 +137,7 @@ const QuestionCard = ({
 
       {/* Remaining counter */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 text-sm text-card-foreground/60 font-medium">
-        {remaining} van {total} over
+        {t(language, 'questionRemaining', { remaining, total })}
       </div>
 
       {/* Category badge */}
@@ -147,7 +150,7 @@ const QuestionCard = ({
       {/* Player */}
       <div className="flex justify-center mb-4">
         <span className="px-4 py-2 rounded-full bg-foreground/10 text-card-foreground text-sm font-semibold">
-          🎄 {currentPlayer} is aan de beurt
+          🎄 {t(language, 'playerTurnLabel', { player: currentPlayer })}
         </span>
       </div>
 
@@ -156,28 +159,28 @@ const QuestionCard = ({
         <div className="mb-6 flex flex-col items-center gap-3">
           <div className="flex items-center gap-2 text-card-foreground/80">
             <Clock className="w-4 h-4" />
-            <span className="text-sm">Timer: {actionTimeLeft}s</span>
-            <span className="text-xs text-card-foreground/60">(tussen 20-30s, random)</span>
+            <span className="text-sm">{t(language, 'timer')}: {actionTimeLeft}s</span>
+            <span className="text-xs text-card-foreground/60">{t(language, 'timerRange')}</span>
           </div>
           <div className="flex gap-2">
             <button
               onClick={handleStartTimer}
               className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground hover:opacity-90 transition-colors"
             >
-              Start timer ({actionDuration}s)
+              {t(language, 'timerStart')} ({actionDuration}s)
             </button>
             <button
               onClick={handleStopTimer}
               className="px-4 py-2 rounded-lg text-sm font-semibold bg-card-foreground/10 text-card-foreground hover:bg-card-foreground/15 transition-colors"
             >
-              Stop
+              {t(language, 'timerStop')}
             </button>
             <button
               onClick={handleSuccess}
               className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:opacity-90 transition-colors flex items-center gap-2"
             >
               <PartyPopper className="w-4 h-4" />
-              Geslaagd
+              {t(language, 'timerSuccess')}
             </button>
           </div>
         </div>
@@ -188,7 +191,7 @@ const QuestionCard = ({
         <div className="mb-6 flex flex-col items-center gap-2">
           <div className="text-sm text-card-foreground/70 flex items-center gap-2">
             <Lightbulb className="w-4 h-4" />
-            <span>Hint nodig? Onthul een letter</span>
+            <span>{t(language, 'hintPrompt')}</span>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -200,7 +203,7 @@ const QuestionCard = ({
                   : 'bg-card-foreground/5 text-card-foreground/40 cursor-not-allowed'
               }`}
             >
-              Geef hint
+              {t(language, 'hintButton')}
             </button>
             <span className="font-display text-lg text-card-foreground tracking-wide">
               {getHintText()}
@@ -224,7 +227,7 @@ const QuestionCard = ({
             className="btn-christmas-gold flex items-center gap-2 text-lg"
           >
             <Gift className="w-5 h-5" />
-            Toon Antwoord 🎁
+            {t(language, 'showAnswer')} 🎁
           </button>
         </div>
       )}
@@ -233,7 +236,7 @@ const QuestionCard = ({
         <div className="answer-reveal text-center mb-6">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Sparkles className="w-5 h-5 text-christmas-gold" />
-            <span className="font-semibold text-card-foreground/70 uppercase text-sm tracking-wide">Antwoord</span>
+            <span className="font-semibold text-card-foreground/70 uppercase text-sm tracking-wide">{t(language, 'answerLabel')}</span>
             <Sparkles className="w-5 h-5 text-christmas-gold" />
           </div>
           <p className="font-display text-xl md:text-2xl text-card-foreground">
@@ -245,7 +248,7 @@ const QuestionCard = ({
       {!hasAnswer && (
         <div className="text-center mb-6 p-4 rounded-xl bg-card-foreground/5">
           <p className="text-card-foreground/60 italic">
-            ✨ Deze vraag heeft geen vast antwoord. Alles wat oprecht of grappig is, telt! ✨
+            {t(language, 'noFixedAnswer')}
           </p>
         </div>
       )}
@@ -256,7 +259,7 @@ const QuestionCard = ({
           onClick={handleNext}
           className="btn-christmas-green text-lg flex items-center gap-2"
         >
-          Volgende Vraag
+          {t(language, 'nextQuestion')}
           <span className="text-xl">→</span>
         </button>
       </div>

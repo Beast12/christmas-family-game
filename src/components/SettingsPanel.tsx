@@ -1,4 +1,5 @@
 import { X, Shuffle, Moon, Sun } from 'lucide-react';
+import { Language, t } from '@/lib/i18n';
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -12,6 +13,8 @@ interface SettingsPanelProps {
   onPlayerNameChange: (index: number, name: string) => void;
   onPlayerAdd: () => void;
   onPlayerRemove: (index: number) => void;
+  language: Language;
+  onLanguageChange: (lang: Language) => void;
 }
 
 const SettingsPanel = ({
@@ -26,6 +29,8 @@ const SettingsPanel = ({
   onPlayerNameChange,
   onPlayerAdd,
   onPlayerRemove,
+  language,
+  onLanguageChange,
 }: SettingsPanelProps) => {
   if (!isOpen) return null;
 
@@ -46,21 +51,34 @@ const SettingsPanel = ({
           <X className="w-5 h-5" />
         </button>
 
-        <h2 className="font-display text-2xl text-card-foreground mb-6">Instellingen</h2>
+        <h2 className="font-display text-2xl text-card-foreground mb-6">{t(language, 'settingsTitle')}</h2>
 
         <div className="space-y-4">
+          {/* Language toggle */}
+          <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
+            <span className="text-card-foreground font-semibold text-sm">Taal / Language</span>
+            <select
+              value={language}
+              onChange={(e) => onLanguageChange(e.target.value as Language)}
+              className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+              <option value="nl">Nederlands</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+
           {/* Player names */}
           <div className="p-4 rounded-xl bg-card-foreground/5">
             <div className="flex items-center justify-between mb-3">
               <div className="text-card-foreground flex flex-col">
-                <span className="font-semibold text-sm">Spelers</span>
-                <span className="text-xs text-card-foreground/60">Pas namen aan of voeg iemand toe</span>
+                <span className="font-semibold text-sm">{t(language, 'playersTitle')}</span>
+                <span className="text-xs text-card-foreground/60">{t(language, 'playersSub')}</span>
               </div>
               <button
                 onClick={onPlayerAdd}
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground hover:opacity-90 transition-colors"
               >
-                + Speler
+                {t(language, 'addPlayer')}
               </button>
             </div>
             <div className="space-y-2">
@@ -82,7 +100,7 @@ const SettingsPanel = ({
                     }`}
                     aria-label="Verwijder speler"
                   >
-                    Verwijder
+                    {t(language, 'remove')}
                   </button>
                 </div>
               ))}
@@ -92,8 +110,8 @@ const SettingsPanel = ({
           {/* Max gifts per child */}
           <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
             <div className="text-card-foreground flex flex-col">
-              <span className="font-semibold text-sm">Max cadeaus per kind</span>
-              <span className="text-xs text-card-foreground/60">Pas dit in één keer voor iedereen aan</span>
+              <span className="font-semibold text-sm">{t(language, 'maxPerChild')}</span>
+              <span className="text-xs text-card-foreground/60">{t(language, 'maxPerChildSub')}</span>
             </div>
             <input
               type="number"
@@ -115,10 +133,10 @@ const SettingsPanel = ({
               ) : (
                 <Moon className="w-5 h-5 text-sky-400" />
               )}
-              <span>Thema</span>
+              <span>{t(language, 'theme')}</span>
             </span>
             <span className="text-sm text-card-foreground/60 capitalize">
-              {theme === 'christmas' ? 'Warm Rood' : 'Winternacht'}
+              {theme === 'christmas' ? t(language, 'themeWarm') : t(language, 'themeWinter')}
             </span>
           </button>
 
@@ -131,12 +149,12 @@ const SettingsPanel = ({
             className="w-full flex items-center justify-center gap-3 p-4 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:opacity-90 transition-opacity"
           >
             <Shuffle className="w-5 h-5" />
-            <span>Nu Schudden</span>
+            <span>{t(language, 'shuffleNow')}</span>
           </button>
         </div>
 
         <p className="text-center text-card-foreground/50 text-xs mt-6">
-          Gemaakt met ❤️ voor familiespeelavonden
+          {t(language, 'madeWithLove')}
         </p>
       </div>
     </div>

@@ -1,3 +1,5 @@
+import { Language, t } from '@/lib/i18n';
+
 interface GiftTrackerProps {
   players: { name: string; gifts: number; bonuses: { skipUsed: boolean; jokerUsed: boolean; doubleUsed: boolean } }[];
   activeIndex: number;
@@ -6,9 +8,10 @@ interface GiftTrackerProps {
   onRemove: (index: number) => void;
   onSkip: (index: number) => void;
   onJoker: (index: number) => void;
+  language: Language;
 }
 
-const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove, onSkip, onJoker }: GiftTrackerProps) => {
+const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove, onSkip, onJoker, language }: GiftTrackerProps) => {
   return (
     <section className="max-w-6xl mx-auto mb-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pb-2 px-1">
@@ -25,19 +28,19 @@ const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove, onSkip
             >
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-card-foreground/60">Cadeau teller</p>
+                  <p className="text-xs uppercase tracking-wide text-card-foreground/60">{t(language, 'giftTracker')}</p>
                   <h3 className="font-display text-xl text-card-foreground">{player.name}</h3>
                 </div>
                 {isActive && (
                   <span className="text-xs font-semibold px-2 py-1 rounded-full bg-foreground/10 text-foreground">
-                    Aan de beurt
+                    {t(language, 'currentTurn')}
                   </span>
                 )}
               </div>
 
               <div className="flex items-center justify-between text-sm text-card-foreground/80 mb-2">
-                <span>{gifts} / {maxGifts} cadeaus</span>
-                <span className="text-card-foreground/60">Nog {Math.max(0, maxGifts - gifts)}</span>
+                <span>{t(language, 'giftCount', { gifts, max: maxGifts })}</span>
+                <span className="text-card-foreground/60">{t(language, 'giftRemaining', { remaining: Math.max(0, maxGifts - gifts) })}</span>
               </div>
 
               <div className="h-2 w-full rounded-full bg-card-foreground/10 overflow-hidden mb-3">
@@ -57,7 +60,7 @@ const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove, onSkip
                       : 'bg-card-foreground/5 text-card-foreground border-card-foreground/30 hover:bg-card-foreground/10'
                   }`}
                 >
-                  Cadeau -1
+                  {t(language, 'giftMinus')}
                 </button>
                 <button
                   onClick={() => onAward(index)}
@@ -68,7 +71,7 @@ const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove, onSkip
                       : 'bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground hover:opacity-90'
                   }`}
                 >
-                  Cadeau +1
+                  {t(language, 'giftPlus')}
                 </button>
               </div>
 
@@ -82,7 +85,7 @@ const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove, onSkip
                       : 'bg-card-foreground/10 text-card-foreground hover:bg-card-foreground/15'
                   }`}
                 >
-                  Vraag overslaan
+                  {t(language, 'skip')}
                 </button>
                 <button
                   onClick={() => onJoker(index)}
@@ -93,7 +96,7 @@ const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove, onSkip
                       : 'bg-card-foreground/10 text-card-foreground hover:bg-card-foreground/15'
                   }`}
                 >
-                  Hulplijn
+                  {t(language, 'lifeline')}
                 </button>
               </div>
             </div>
