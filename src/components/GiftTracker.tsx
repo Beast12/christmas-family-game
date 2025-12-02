@@ -1,23 +1,25 @@
 interface GiftTrackerProps {
-  players: { name: string; gifts: number }[];
+  players: { name: string; gifts: number; bonuses: { skipUsed: boolean; jokerUsed: boolean; doubleUsed: boolean } }[];
   activeIndex: number;
   maxGifts: number;
   onAward: (index: number) => void;
   onRemove: (index: number) => void;
+  onSkip: (index: number) => void;
+  onJoker: (index: number) => void;
 }
 
-const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove }: GiftTrackerProps) => {
+const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove, onSkip, onJoker }: GiftTrackerProps) => {
   return (
     <section className="max-w-6xl mx-auto mb-6">
-      <div className="flex gap-3 overflow-x-auto pb-2 px-1 justify-center md:justify-start no-scrollbar">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pb-2 px-1">
         {players.map((player, index) => {
           const isActive = index === activeIndex;
-          const { gifts } = player;
+          const { gifts, bonuses } = player;
           const progress = maxGifts === 0 ? 0 : Math.min(100, Math.round((gifts / maxGifts) * 100));
           return (
             <div
               key={player.name}
-              className={`w-[260px] md:w-[280px] rounded-2xl border bg-card/80 backdrop-blur-sm p-4 transition-all flex-shrink-0 ${
+              className={`w-full rounded-2xl border bg-card/80 backdrop-blur-sm p-4 transition-all ${
                 isActive ? 'border-accent shadow-[0_12px_30px_-12px_rgba(0,0,0,0.6)]' : 'border-border/60'
               }`}
             >
@@ -67,6 +69,31 @@ const GiftTracker = ({ players, activeIndex, maxGifts, onAward, onRemove }: Gift
                   }`}
                 >
                   Cadeau +1
+                </button>
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+                <button
+                  onClick={() => onSkip(index)}
+                  disabled={bonuses.skipUsed || !isActive}
+                  className={`px-3 py-2 rounded-lg font-semibold transition-colors ${
+                    bonuses.skipUsed || !isActive
+                      ? 'bg-card-foreground/5 text-card-foreground/40 cursor-not-allowed'
+                      : 'bg-card-foreground/10 text-card-foreground hover:bg-card-foreground/15'
+                  }`}
+                >
+                  Vraag overslaan
+                </button>
+                <button
+                  onClick={() => onJoker(index)}
+                  disabled={bonuses.jokerUsed || !isActive}
+                  className={`px-3 py-2 rounded-lg font-semibold transition-colors ${
+                    bonuses.jokerUsed || !isActive
+                      ? 'bg-card-foreground/5 text-card-foreground/40 cursor-not-allowed'
+                      : 'bg-card-foreground/10 text-card-foreground hover:bg-card-foreground/15'
+                  }`}
+                >
+                  Hulplijn
                 </button>
               </div>
             </div>

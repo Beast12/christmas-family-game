@@ -8,9 +8,25 @@ interface SettingsPanelProps {
   onToggleTheme: () => void;
   maxGifts: number;
   onMaxChange: (value: number) => void;
+  players: { name: string }[];
+  onPlayerNameChange: (index: number, name: string) => void;
+  onPlayerAdd: () => void;
+  onPlayerRemove: (index: number) => void;
 }
 
-const SettingsPanel = ({ isOpen, onClose, onShuffle, theme, onToggleTheme, maxGifts, onMaxChange }: SettingsPanelProps) => {
+const SettingsPanel = ({
+  isOpen,
+  onClose,
+  onShuffle,
+  theme,
+  onToggleTheme,
+  maxGifts,
+  onMaxChange,
+  players,
+  onPlayerNameChange,
+  onPlayerAdd,
+  onPlayerRemove,
+}: SettingsPanelProps) => {
   if (!isOpen) return null;
 
   return (
@@ -33,6 +49,46 @@ const SettingsPanel = ({ isOpen, onClose, onShuffle, theme, onToggleTheme, maxGi
         <h2 className="font-display text-2xl text-card-foreground mb-6">Instellingen</h2>
 
         <div className="space-y-4">
+          {/* Player names */}
+          <div className="p-4 rounded-xl bg-card-foreground/5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-card-foreground flex flex-col">
+                <span className="font-semibold text-sm">Spelers</span>
+                <span className="text-xs text-card-foreground/60">Pas namen aan of voeg iemand toe</span>
+              </div>
+              <button
+                onClick={onPlayerAdd}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground hover:opacity-90 transition-colors"
+              >
+                + Speler
+              </button>
+            </div>
+            <div className="space-y-2">
+              {players.map((player, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={player.name}
+                    onChange={(e) => onPlayerNameChange(index, e.target.value)}
+                    className="flex-1 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                  />
+                  <button
+                    onClick={() => onPlayerRemove(index)}
+                    disabled={players.length <= 1}
+                    className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors ${
+                      players.length <= 1
+                        ? 'text-card-foreground/40 border-card-foreground/15 cursor-not-allowed'
+                        : 'text-card-foreground border-card-foreground/30 hover:bg-card-foreground/10'
+                    }`}
+                    aria-label="Verwijder speler"
+                  >
+                    Verwijder
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Max gifts per child */}
           <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
             <div className="text-card-foreground flex flex-col">

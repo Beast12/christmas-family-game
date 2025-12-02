@@ -1,5 +1,5 @@
 interface PlayerSpotlightProps {
-  players: { name: string; gifts?: number; maxGifts?: number }[];
+  players: { name: string; gifts?: number; maxGifts?: number; bonuses?: { skipUsed: boolean; jokerUsed: boolean; doubleUsed: boolean } }[];
   activeIndex: number;
 }
 
