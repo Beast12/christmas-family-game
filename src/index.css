@@ -54,6 +54,8 @@
     /* Gradients */
     --gradient-christmas: linear-gradient(135deg, hsl(0, 40%, 15%) 0%, hsl(145, 35%, 12%) 50%, hsl(0, 35%, 18%) 100%);
     --gradient-winter: linear-gradient(135deg, hsl(220, 50%, 12%) 0%, hsl(200, 45%, 15%) 50%, hsl(220, 45%, 18%) 100%);
+    --gradient-peppermint: linear-gradient(135deg, hsl(150, 45%, 92%) 0%, hsl(120, 35%, 88%) 50%, hsl(150, 30%, 86%) 100%);
+    --gradient-midnight: linear-gradient(135deg, hsl(235, 45%, 10%) 0%, hsl(220, 40%, 14%) 50%, hsl(240, 35%, 18%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(45, 30%, 97%) 0%, hsl(45, 25%, 92%) 100%);
     --gradient-gold: linear-gradient(135deg, hsl(45, 80%, 55%) 0%, hsl(35, 75%, 45%) 100%);
 
@@ -82,6 +84,26 @@
     --muted: 220 30% 20%;
     --muted-foreground: 200 20% 70%;
   }
+
+  .theme-peppermint {
+    --background: 140 40% 92%;
+    --foreground: 150 15% 15%;
+    --primary: 0 70% 55%;
+    --secondary: 140 45% 35%;
+    --accent: 40 80% 55%;
+    --muted: 150 30% 85%;
+    --muted-foreground: 150 15% 35%;
+  }
+
+  .theme-midnight {
+    --background: 240 45% 8%;
+    --foreground: 220 15% 92%;
+    --primary: 260 65% 60%;
+    --secondary: 200 60% 45%;
+    --accent: 45 80% 60%;
+    --muted: 230 25% 20%;
+    --muted-foreground: 220 20% 70%;
+  }
 }
 
 @layer base {
@@ -98,6 +120,14 @@
 
   body.theme-winter {
     background: var(--gradient-winter);
+  }
+
+  body.theme-peppermint {
+    background: var(--gradient-peppermint);
+  }
+
+  body.theme-midnight {
+    background: var(--gradient-midnight);
   }
 }
 

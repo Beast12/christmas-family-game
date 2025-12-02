@@ -1,12 +1,12 @@
-import { X, Shuffle, Moon, Sun } from 'lucide-react';
+import { X, Shuffle } from 'lucide-react';
 import { Language, t } from '@/lib/i18n';
 
 interface SettingsPanelProps {
   isOpen: boolean;
   onClose: () => void;
   onShuffle: () => void;
-  theme: 'christmas' | 'winter';
-  onToggleTheme: () => void;
+  theme: 'christmas' | 'winter' | 'peppermint' | 'midnight';
+  onThemeChange: (value: 'christmas' | 'winter' | 'peppermint' | 'midnight') => void;
   maxGifts: number;
   onMaxChange: (value: number) => void;
   players: { name: string }[];
@@ -22,7 +22,7 @@ const SettingsPanel = ({
   onClose,
   onShuffle,
   theme,
-  onToggleTheme,
+  onThemeChange,
   maxGifts,
   onMaxChange,
   players,
@@ -122,23 +122,20 @@ const SettingsPanel = ({
             />
           </div>
 
-          {/* Theme toggle */}
-          <button
-            onClick={onToggleTheme}
-            className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5 hover:bg-card-foreground/10 transition-colors"
-          >
-            <span className="flex items-center gap-3 text-card-foreground">
-              {theme === 'christmas' ? (
-                <Sun className="w-5 h-5 text-christmas-gold" />
-              ) : (
-                <Moon className="w-5 h-5 text-sky-400" />
-              )}
-              <span>{t(language, 'theme')}</span>
-            </span>
-            <span className="text-sm text-card-foreground/60 capitalize">
-              {theme === 'christmas' ? t(language, 'themeWarm') : t(language, 'themeWinter')}
-            </span>
-          </button>
+          {/* Theme select */}
+          <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
+            <span className="text-card-foreground font-semibold text-sm">{t(language, 'theme')}</span>
+            <select
+              value={theme}
+              onChange={(e) => onThemeChange(e.target.value as 'christmas' | 'winter' | 'peppermint' | 'midnight')}
+              className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent capitalize"
+            >
+              <option value="christmas">{t(language, 'themeWarm')}</option>
+              <option value="winter">{t(language, 'themeWinter')}</option>
+              <option value="peppermint">{t(language, 'themePeppermint')}</option>
+              <option value="midnight">{t(language, 'themeMidnight')}</option>
+            </select>
+          </div>
 
           {/* Shuffle button */}
           <button

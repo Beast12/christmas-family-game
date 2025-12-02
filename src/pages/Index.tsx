@@ -32,7 +32,7 @@ const Index = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [theme, setTheme] = useState<'christmas' | 'winter'>('christmas');
+  const [theme, setTheme] = useState<'christmas' | 'winter' | 'peppermint' | 'midnight'>('christmas');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [language, setLanguage] = useState<Language>('nl');
   const [lootBoxReward, setLootBoxReward] = useState<{ player: string; message: string } | null>(null);
@@ -69,10 +69,10 @@ const Index = () => {
   }, [initializeQuestions]);
 
   useEffect(() => {
-    if (theme === 'winter') {
-      document.body.classList.add('theme-winter');
-    } else {
-      document.body.classList.remove('theme-winter');
+    const themeClasses = ['theme-winter', 'theme-peppermint', 'theme-midnight'];
+    document.body.classList.remove(...themeClasses);
+    if (theme !== 'christmas') {
+      document.body.classList.add(`theme-${theme}`);
     }
   }, [theme]);
 
@@ -92,8 +92,8 @@ const Index = () => {
     initializeQuestions();
   };
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'christmas' ? 'winter' : 'christmas');
+  const handleThemeChange = (value: 'christmas' | 'winter' | 'peppermint' | 'midnight') => {
+    setTheme(value);
   };
 
   const handlePlayerNameChange = (playerIndex: number, name: string) => {
@@ -250,7 +250,7 @@ const Index = () => {
           onClose={() => setSettingsOpen(false)}
           onShuffle={handleShuffle}
           theme={theme}
-          onToggleTheme={toggleTheme}
+          onThemeChange={handleThemeChange}
           maxGifts={maxGifts}
           onMaxChange={handleAdjustMaxGifts}
           language={language}
