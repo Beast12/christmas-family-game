@@ -13,6 +13,7 @@ import { t } from '@/lib/i18n';
 type Player = {
   name: string;
   gifts: number;
+  correct: number;
   bonuses: {
     skipUsed: boolean;
     jokerUsed: boolean;
@@ -22,12 +23,13 @@ type Player = {
 
 const Index = () => {
   const [players, setPlayers] = useState<Player[]>([
-    { name: 'Broos', gifts: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
-    { name: 'Finn', gifts: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
-    { name: 'Tibo', gifts: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
-    { name: 'Jill', gifts: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+    { name: 'Broos', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+    { name: 'Finn', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+    { name: 'Tibo', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+    { name: 'Jill', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
   ]);
   const [maxGifts, setMaxGifts] = useState(3);
+  const [threshold, setThreshold] = useState(3); // correcte antwoorden nodig voor cadeau
   const [remainingQuestions, setRemainingQuestions] = useState<Question[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
@@ -36,6 +38,7 @@ const Index = () => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [language, setLanguage] = useState<Language>('nl');
   const [lootBoxReward, setLootBoxReward] = useState<{ player: string; message: string } | null>(null);
+  const [riddleMinutes, setRiddleMinutes] = useState(1);
 
   const rewardMessages: Record<Language, string[]> = {
     nl: [
@@ -107,7 +110,7 @@ const Index = () => {
   const handlePlayerAdd = () => {
     setPlayers(prev => [
       ...prev,
-      { name: `Speler ${prev.length + 1}`, gifts: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+      { name: `Speler ${prev.length + 1}`, gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
     ]);
   };
 
@@ -160,6 +163,20 @@ const Index = () => {
     })));
   };
 
+  const handleAdjustRiddleMinutes = (value: number) => {
+    const sanitized = Math.max(0, value);
+    setRiddleMinutes(sanitized);
+  };
+
+  const handleAdjustThreshold = (value: number) => {
+    const sanitized = Math.max(1, value);
+    setThreshold(sanitized);
+    setPlayers(prev => prev.map(player => ({
+      ...player,
+      correct: Math.min(player.correct, sanitized - 1),
+    })));
+  };
+
   const handleRemoveGift = (playerIndex: number) => {
     setPlayers(prev =>
       prev.map((player, index) => {
@@ -168,6 +185,26 @@ const Index = () => {
         return { ...player, gifts: nextGifts };
       })
     );
+  };
+
+  const handleCorrect = (playerIndex: number) => {
+    setPlayers(prev => {
+      const player = prev[playerIndex];
+      if (!player) return prev;
+      let newCorrect = player.correct + 1;
+      let giftsToAdd = 0;
+      if (newCorrect >= threshold) {
+        giftsToAdd = Math.floor(newCorrect / threshold);
+        newCorrect = newCorrect % threshold;
+      }
+      const updated = prev.map((p, idx) =>
+        idx === playerIndex ? { ...p, correct: newCorrect } : p
+      );
+      if (giftsToAdd > 0) {
+        handleAwardGift(playerIndex, giftsToAdd);
+      }
+      return updated;
+    });
   };
 
   const handleUseSkip = (playerIndex: number) => {
@@ -220,8 +257,10 @@ const Index = () => {
           players={players}
           activeIndex={currentPlayerIndex}
           maxGifts={maxGifts}
+          threshold={threshold}
           onAward={(index) => handleAwardGift(index)}
           onRemove={(index) => handleRemoveGift(index)}
+          onCorrect={(index) => handleCorrect(index)}
           onSkip={(index) => handleUseSkip(index)}
           onJoker={(index) => handleUseJoker(index)}
           language={language}
@@ -236,6 +275,7 @@ const Index = () => {
           total={totalQuestions || remainingQuestions.length + 1}
           currentPlayer={players[currentPlayerIndex].name}
           language={language}
+          riddleMinutes={riddleMinutes}
         />
       </main>
 
@@ -247,17 +287,21 @@ const Index = () => {
 
         <SettingsPanel
           isOpen={settingsOpen}
-          onClose={() => setSettingsOpen(false)}
-          onShuffle={handleShuffle}
-          theme={theme}
+        onClose={() => setSettingsOpen(false)}
+        onShuffle={handleShuffle}
+        theme={theme}
           onThemeChange={handleThemeChange}
           maxGifts={maxGifts}
           onMaxChange={handleAdjustMaxGifts}
+          riddleMinutes={riddleMinutes}
+          onRiddleMinutesChange={handleAdjustRiddleMinutes}
+          threshold={threshold}
+          onThresholdChange={handleAdjustThreshold}
           language={language}
           onLanguageChange={setLanguage}
-          players={players}
-          onPlayerNameChange={handlePlayerNameChange}
-          onPlayerAdd={handlePlayerAdd}
+        players={players}
+        onPlayerNameChange={handlePlayerNameChange}
+        onPlayerAdd={handlePlayerAdd}
           onPlayerRemove={handlePlayerRemove}
         />
     </div>

@@ -46,6 +46,7 @@ const QuestionCard = ({
   };
 
   const hasAnswer = !!question.answer;
+  const isRiddle = question.category === 'Raadsel' || question.category === 'Riddle';
 
   // Reset per vraag
   useEffect(() => {
@@ -153,6 +154,15 @@ const QuestionCard = ({
           🎄 {t(language, 'playerTurnLabel', { player: currentPlayer })}
         </span>
       </div>
+
+      {/* All-play notice for riddles */}
+      {isRiddle && (
+        <div className="flex justify-center mb-4">
+          <div className="px-4 py-2 rounded-full bg-accent/10 text-card-foreground text-sm font-semibold border border-accent/30">
+            {t(language, 'riddleAllPlay')}
+          </div>
+        </div>
+      )}
 
       {/* Action timer */}
       {isAction && (

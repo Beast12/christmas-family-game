@@ -9,6 +9,8 @@ interface SettingsPanelProps {
   onThemeChange: (value: 'christmas' | 'winter' | 'peppermint' | 'midnight') => void;
   maxGifts: number;
   onMaxChange: (value: number) => void;
+  threshold: number;
+  onThresholdChange: (value: number) => void;
   players: { name: string }[];
   onPlayerNameChange: (index: number, name: string) => void;
   onPlayerAdd: () => void;
@@ -25,6 +27,8 @@ const SettingsPanel = ({
   onThemeChange,
   maxGifts,
   onMaxChange,
+  threshold,
+  onThresholdChange,
   players,
   onPlayerNameChange,
   onPlayerAdd,
@@ -118,6 +122,21 @@ const SettingsPanel = ({
               min={0}
               value={maxGifts}
               onChange={(e) => onMaxChange(parseInt(e.target.value, 10) || 0)}
+              className="w-20 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          {/* Threshold for gifts */}
+          <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
+            <div className="text-card-foreground flex flex-col">
+              <span className="font-semibold text-sm">{t(language, 'thresholdLabel')}</span>
+              <span className="text-xs text-card-foreground/60">{t(language, 'thresholdSub')}</span>
+            </div>
+            <input
+              type="number"
+              min={1}
+              value={threshold}
+              onChange={(e) => onThresholdChange(parseInt(e.target.value, 10) || 1)}
               className="w-20 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
