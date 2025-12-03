@@ -72,6 +72,11 @@ const Index = () => {
   }, [initializeQuestions]);
 
   useEffect(() => {
+    const title = language === 'nl' ? 'Kerstavond Familiespel' : 'Christmas Eve Family Game';
+    document.title = title;
+  }, [language]);
+
+  useEffect(() => {
     const themeClasses = ['theme-winter', 'theme-peppermint', 'theme-midnight'];
     document.body.classList.remove(...themeClasses);
     if (theme !== 'christmas') {
