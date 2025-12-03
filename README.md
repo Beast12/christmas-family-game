@@ -42,7 +42,6 @@ An interactive holiday party game with riddles, actions, dilemmas, reflections, 
 ---
 
 ## Screenshots
-_(Add your own full-page screenshots here: home, settings, riddle timer, gift tracker, lootbox popup, themes.)_
 
 Category samples:
 - Riddle: ![Riddle](riddle.png)
@@ -61,7 +60,7 @@ Category samples:
 ---
 
 ## Support
-If you enjoy the game, consider buying me a coffee:
+If you enjoy the game, show your holiday spirit and consider buying me a coffee:
 
 <div align="center">
   <a href="https://www.buymeacoffee.com/koen1203" target="_blank">
