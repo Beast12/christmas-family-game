@@ -9,6 +9,8 @@ interface SettingsPanelProps {
   onThemeChange: (value: 'christmas' | 'winter' | 'peppermint' | 'midnight') => void;
   maxGifts: number;
   onMaxChange: (value: number) => void;
+  riddleMinutes: number;
+  onRiddleMinutesChange: (value: number) => void;
   threshold: number;
   onThresholdChange: (value: number) => void;
   players: { name: string }[];
@@ -27,6 +29,8 @@ const SettingsPanel = ({
   onThemeChange,
   maxGifts,
   onMaxChange,
+  riddleMinutes,
+  onRiddleMinutesChange,
   threshold,
   onThresholdChange,
   players,
@@ -122,6 +126,22 @@ const SettingsPanel = ({
               min={0}
               value={maxGifts}
               onChange={(e) => onMaxChange(parseInt(e.target.value, 10) || 0)}
+              className="w-20 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          {/* Riddle timer minutes */}
+          <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
+            <div className="text-card-foreground flex flex-col">
+              <span className="font-semibold text-sm">{t(language, 'riddleTimerLabel')}</span>
+              <span className="text-xs text-card-foreground/60">{t(language, 'riddleTimerSub')}</span>
+            </div>
+            <input
+              type="number"
+              min={0}
+              step={0.5}
+              value={riddleMinutes}
+              onChange={(e) => onRiddleMinutesChange(parseFloat(e.target.value) || 0)}
               className="w-20 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>

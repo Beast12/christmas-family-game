@@ -51,7 +51,12 @@ const translations: Record<Language, Record<string, string>> = {
     playerTurnLabel: '{player} is aan de beurt',
     thresholdLabel: 'Juiste antwoorden per pakje',
     thresholdSub: 'Automatisch cadeau bij dit aantal',
+    riddleTimerLabel: 'Raadsel timer (minuten)',
+    riddleTimerSub: 'Tijd op? Dan stopt het raden',
     riddleAllPlay: 'Raadsel! Iedereen mag meedoen en raden.',
+    riddleTimeUpTitle: 'Tijd is om',
+    riddleTimeUpMessage: 'Het raden stopt hier. Klik verder om door te gaan.',
+    riddleTimeUpClose: 'Oké, door naar de volgende',
   },
   en: {
     currentTurn: 'Current turn',
@@ -70,6 +75,8 @@ const translations: Record<Language, Record<string, string>> = {
     lifeline: 'Use lifeline',
     maxPerChild: 'Max gifts per player',
     maxPerChildSub: 'Set this once for everyone',
+    riddleTimerLabel: 'Riddle timer (minutes)',
+    riddleTimerSub: 'Time up ends guessing',
     playersTitle: 'Players',
     playersSub: 'Edit names or add someone',
     addPlayer: '+ Player',
@@ -103,6 +110,9 @@ const translations: Record<Language, Record<string, string>> = {
     thresholdLabel: 'Correct answers per gift',
     thresholdSub: 'Auto-gift at this count',
     riddleAllPlay: 'Riddle! Everyone can join and guess.',
+    riddleTimeUpTitle: 'Time is up',
+    riddleTimeUpMessage: 'Guessing stops now. Click to continue.',
+    riddleTimeUpClose: 'OK, next one',
   },
 };
 
