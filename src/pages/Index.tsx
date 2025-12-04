@@ -23,11 +23,12 @@ type Player = {
 
 const Index = () => {
   const [players, setPlayers] = useState<Player[]>([
-    { name: 'Broos', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
-    { name: 'Finn', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
-    { name: 'Tibo', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
-    { name: 'Jill', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+  { name: 'Player 1', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+  { name: 'Player 2', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+  { name: 'Player 3', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+  { name: 'Player 4', gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
   ]);
+
   const [maxGifts, setMaxGifts] = useState(3);
   const [threshold, setThreshold] = useState(3); // correcte antwoorden nodig voor cadeau
   const [remainingQuestions, setRemainingQuestions] = useState<Question[]>([]);
@@ -105,19 +106,23 @@ const Index = () => {
   };
 
   const handlePlayerNameChange = (playerIndex: number, name: string) => {
-    setPlayers(prev =>
-      prev.map((player, index) =>
-        index === playerIndex ? { ...player, name: name || `Speler ${index + 1}` } : player
+  setPlayers(prev =>
+    prev.map((player, index) =>
+      index === playerIndex
+        ? { ...player, name: name || (language === 'nl' ? `Speler ${index + 1}` : `Player ${index + 1}`) }
+        : player
       )
     );
   };
 
   const handlePlayerAdd = () => {
-    setPlayers(prev => [
-      ...prev,
-      { name: `Speler ${prev.length + 1}`, gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
+  const defaultName = language === 'nl' ? `Speler ${players.length + 1}` : `Player ${players.length + 1}`;
+  setPlayers(prev => [
+    ...prev,
+    { name: defaultName, gifts: 0, correct: 0, bonuses: { skipUsed: false, jokerUsed: false, doubleUsed: false } },
     ]);
   };
+
 
   const handlePlayerRemove = (playerIndex: number) => {
     setPlayers(prev => {
