@@ -12,5 +12,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app/dist ./dist
 RUN npm install -g serve
+LABEL org.opencontainers.image.source="https://github.com/Beast12/christmas-family-game"
 EXPOSE 4173
 CMD ["serve", "-s", "dist", "-l", "4173"]
