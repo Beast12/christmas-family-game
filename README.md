@@ -1,5 +1,6 @@
 # Family Christmas Game 🎄
 [![Build](https://github.com/Beast12/christmas-eve-question-card/actions/workflows/build.yml/badge.svg)](https://github.com/Beast12/christmas-eve-question-card/actions/workflows/build.yml)
+[![Release (semantic version bump + image)](https://github.com/Beast12/christmas-family-game/actions/workflows/release.yml/badge.svg)](https://github.com/Beast12/christmas-family-game/actions/workflows/release.yml)
 
 An interactive holiday party game with riddles, actions, dilemmas, reflections, player rotation, score tracking, lootbox rewards, multilingual NL/EN support, themes, and built-in fairness tools.
 
