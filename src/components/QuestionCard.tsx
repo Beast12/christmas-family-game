@@ -19,6 +19,9 @@ const categoryColors: Record<Question['category'], string> = {
   'Taak/Actie': 'from-emerald-600 to-emerald-700',
   'Dilemma': 'from-purple-600 to-purple-700',
   'Reflectie': 'from-sky-600 to-sky-700',
+  'Trivia': 'from-blue-600 to-blue-700',
+  'Waarheid of Durf': 'from-fuchsia-600 to-fuchsia-700',
+  'Truth or Dare': 'from-fuchsia-600 to-fuchsia-700',
 };
 
 const QuestionCard = ({
