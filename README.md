@@ -1,8 +1,8 @@
-# Family Christmas Game 🎄
+# Family Quiz Game 🎄
 [![Build](https://github.com/Beast12/christmas-eve-question-card/actions/workflows/build.yml/badge.svg)](https://github.com/Beast12/christmas-eve-question-card/actions/workflows/build.yml)
 [![Release (semantic version bump + image)](https://github.com/Beast12/christmas-family-game/actions/workflows/release.yml/badge.svg)](https://github.com/Beast12/christmas-family-game/actions/workflows/release.yml)
 
-An interactive holiday party game with riddles, actions, dilemmas, reflections, player rotation, score tracking, lootbox rewards, multilingual NL/EN support, themes, and built-in fairness tools.
+An interactive party game for any day. Rotate players, draw questions, use timers, and track gifts or play without them. Includes NL/EN, multiple themes, and custom AI question pools.
 
 ---
 
@@ -25,32 +25,33 @@ An interactive holiday party game with riddles, actions, dilemmas, reflections, 
 
 ## How to play
 - **Players & turns**: Add/rename/remove players in *Settings*. Turns rotate automatically in a round-robin.
-- **Questions**: 100 mixed prompts (Riddles, Family & Memories, Action, Dilemma, Reflection) with NL/EN text. Language is selectable in *Settings*.
+- **Question pools**: Pick from Christmas, Trivia, or Truth-or-Dare. Trivia and Truth-or-Dare support Kids/Adults variants.
 - **All-play riddles**: When a riddle appears, everyone may guess. A configurable riddle timer counts down; requesting a hint subtracts 10 seconds. When time is up, a clear popup stops guessing.
 - **Hints**: Riddles can reveal letters one by one; each hint costs time on the riddle timer.
-- **Scoreboard → gifts**: Track “good answers” per player. Set the threshold (good answers per gift). When a player reaches the threshold, a gift is auto-awarded and a lootbox popup tells them to pick a present.
-- **Bonussen**: “Vraag overslaan / Skip” and “Hulplijn / Lifeline” are once per player; only the active player can use them.
-- **Themes**: Choose from Warm Red (default), Winternacht, Pepermunt Sneeuw / Peppermint Frost, and Middernacht Aurora / Midnight Aurora in *Settings*.
+- **Gifts (optional)**: Toggle gifts on/off. If enabled, track “good answers” per player and set the threshold (good answers per gift). Reaching the threshold awards a gift and triggers a lootbox prompt.
+- **Bonuses**: “Vraag overslaan / Skip” and “Hulplijn / Lifeline” are once per player; only the active player can use them.
+- **Themes**: Christmas Eve, Christmas Day, Easter, Summer, Cozy Night, Sunset, and Classic.
 - **Fairness**: Turn order is fixed rotation; question deck reshuffles when empty.
+- **AI pools**: Create custom question pools using your ChatGPT API key, a prompt, and a question count. Save or delete pools locally.
 
 ---
 
 ## Controls & UI
-- **Settings panel**: Language (NL/EN), theme, max gifts, threshold (good answers per gift), riddle timer minutes, player management, shuffle deck.
-- **Spotlight**: Shows whose turn it is; riddles display an all-play notice and timer.
-- **Gift tracker**: Per player progress bars for gifts and good answers; buttons for good answer +1, skip, lifeline.
+- **Settings panel**: Language (NL/EN), theme, question pool, kids/adults audience (when supported), AI pool builder, gifts toggle, max gifts, threshold, riddle timer, player management, shuffle deck.
+- **Header**: Large “Current turn” banner.
+- **Gift tracker**: Per player progress for gifts and good answers; buttons for good answer +1, skip, lifeline (hidden if gifts are off).
 - **Lootbox**: On gift award, a reward card appears with a prompt to pick/hand over a present.
 
 ---
 
 ## Screenshots
 
-Category samples:
-- Riddle: ![Riddle](riddle.png)
-- Family & Memories: ![Family & Memories](Family.png)
-- Action: ![Action](Action.png)
-- Dilemma: ![Dilemma](Dilemma.png)
-- Reflection: ![Reflection](Reflection.png)
+Feature highlights:
+- Themes: ![Themes](themes.png)
+- Question pools: ![Question pools](QuestionPools.png)
+- AI question pools: ![AI question pools](ai-question-pools.png)
+- Gifts enabled: ![Gifts enabled](Gifts.png)
+- Gifts disabled: ![Gifts disabled](NoGifts.png)
 
 ---
 
