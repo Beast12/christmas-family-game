@@ -43,7 +43,7 @@ const SettingsPanel = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-40 flex items-start justify-center p-4 sm:items-center">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -51,7 +51,7 @@ const SettingsPanel = ({
       />
       
       {/* Panel */}
-      <div className="relative bg-card rounded-2xl p-6 w-full max-w-sm shadow-2xl border-2 border-accent/30">
+      <div className="relative bg-card rounded-2xl p-6 w-full max-w-sm shadow-2xl border-2 border-accent/30 max-h-[calc(100vh-2rem)] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-card-foreground/60 hover:text-card-foreground"
