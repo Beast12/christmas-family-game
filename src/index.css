@@ -56,13 +56,16 @@
     --gradient-card: linear-gradient(145deg, hsl(45, 30%, 97%) 0%, hsl(45, 25%, 92%) 100%);
     --gradient-gold: linear-gradient(135deg, hsl(45, 80%, 55%) 0%, hsl(35, 75%, 45%) 100%);
     --gradient-theme: var(--gradient-christmas-eve);
+    --gradient-button-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(0, 55%, 38%) 100%);
+    --gradient-button-secondary: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(145, 40%, 25%) 100%);
+    --gradient-button-accent: var(--gradient-gold);
 
     /* Shadows */
     --shadow-card: 0 10px 40px -10px rgba(0, 0, 0, 0.4), 0 0 60px -20px hsl(45, 80%, 50%, 0.3);
     --shadow-button: 0 4px 15px -3px rgba(0, 0, 0, 0.3);
-    --shadow-glow-red: 0 0 30px hsl(0, 65%, 45%, 0.5);
-    --shadow-glow-green: 0 0 30px hsl(145, 45%, 30%, 0.5);
-    --shadow-glow-gold: 0 0 30px hsl(45, 80%, 50%, 0.5);
+    --shadow-glow-primary: 0 0 30px hsl(var(--primary) / 0.5);
+    --shadow-glow-secondary: 0 0 30px hsl(var(--secondary) / 0.5);
+    --shadow-glow-accent: 0 0 30px hsl(var(--accent) / 0.5);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -76,6 +79,10 @@
 
   .theme-christmas-eve {
     --gradient-theme: var(--gradient-christmas-eve);
+    --gradient-card: linear-gradient(145deg, hsl(45, 30%, 97%) 0%, hsl(45, 25%, 92%) 100%);
+    --gradient-button-primary: linear-gradient(135deg, hsl(0, 65%, 45%) 0%, hsl(0, 55%, 38%) 100%);
+    --gradient-button-secondary: linear-gradient(135deg, hsl(145, 45%, 30%) 0%, hsl(145, 40%, 25%) 100%);
+    --gradient-button-accent: var(--gradient-gold);
   }
 
   .theme-christmas-day {
@@ -86,7 +93,16 @@
     --accent: 45 80% 55%;
     --muted: 30 25% 88%;
     --muted-foreground: 0 20% 35%;
+    --card: 35 60% 95%;
+    --card-foreground: 0 35% 18%;
+    --border: 30 45% 80%;
+    --input: 30 35% 90%;
+    --ring: 45 80% 55%;
     --gradient-theme: var(--gradient-christmas-day);
+    --gradient-card: linear-gradient(145deg, hsl(40, 60%, 98%) 0%, hsl(30, 45%, 92%) 100%);
+    --gradient-button-primary: linear-gradient(135deg, hsl(0, 70%, 55%) 0%, hsl(350, 65%, 45%) 100%);
+    --gradient-button-secondary: linear-gradient(135deg, hsl(145, 45%, 35%) 0%, hsl(120, 40%, 28%) 100%);
+    --gradient-button-accent: linear-gradient(135deg, hsl(45, 85%, 55%) 0%, hsl(30, 75%, 45%) 100%);
   }
 
   .theme-easter {
@@ -97,7 +113,16 @@
     --accent: 35 80% 60%;
     --muted: 140 25% 88%;
     --muted-foreground: 150 20% 35%;
+    --card: 150 40% 96%;
+    --card-foreground: 150 20% 18%;
+    --border: 140 25% 80%;
+    --input: 140 30% 92%;
+    --ring: 280 55% 60%;
     --gradient-theme: var(--gradient-easter);
+    --gradient-card: linear-gradient(145deg, hsl(160, 45%, 97%) 0%, hsl(280, 35%, 95%) 100%);
+    --gradient-button-primary: linear-gradient(135deg, hsl(280, 55%, 60%) 0%, hsl(250, 55%, 52%) 100%);
+    --gradient-button-secondary: linear-gradient(135deg, hsl(160, 45%, 35%) 0%, hsl(140, 40%, 30%) 100%);
+    --gradient-button-accent: linear-gradient(135deg, hsl(35, 85%, 60%) 0%, hsl(20, 80%, 52%) 100%);
   }
 
   .theme-summer {
@@ -108,7 +133,16 @@
     --accent: 45 90% 55%;
     --muted: 200 35% 85%;
     --muted-foreground: 200 20% 35%;
+    --card: 190 55% 96%;
+    --card-foreground: 200 25% 18%;
+    --border: 195 35% 80%;
+    --input: 190 45% 92%;
+    --ring: 15 80% 55%;
     --gradient-theme: var(--gradient-summer);
+    --gradient-card: linear-gradient(145deg, hsl(190, 60%, 98%) 0%, hsl(50, 75%, 90%) 100%);
+    --gradient-button-primary: linear-gradient(135deg, hsl(15, 80%, 55%) 0%, hsl(10, 75%, 48%) 100%);
+    --gradient-button-secondary: linear-gradient(135deg, hsl(200, 60%, 40%) 0%, hsl(190, 55%, 35%) 100%);
+    --gradient-button-accent: linear-gradient(135deg, hsl(45, 90%, 55%) 0%, hsl(30, 85%, 50%) 100%);
   }
 
   .theme-cozy {
@@ -119,7 +153,16 @@
     --accent: 40 80% 55%;
     --muted: 20 20% 20%;
     --muted-foreground: 30 25% 70%;
+    --card: 28 30% 18%;
+    --card-foreground: 30 30% 92%;
+    --border: 20 25% 30%;
+    --input: 20 25% 22%;
+    --ring: 40 80% 55%;
     --gradient-theme: var(--gradient-cozy);
+    --gradient-card: linear-gradient(145deg, hsl(20, 30%, 20%) 0%, hsl(10, 25%, 16%) 100%);
+    --gradient-button-primary: linear-gradient(135deg, hsl(20, 65%, 45%) 0%, hsl(10, 55%, 35%) 100%);
+    --gradient-button-secondary: linear-gradient(135deg, hsl(10, 45%, 35%) 0%, hsl(0, 40%, 28%) 100%);
+    --gradient-button-accent: linear-gradient(135deg, hsl(40, 80%, 55%) 0%, hsl(25, 75%, 45%) 100%);
   }
 
   .theme-sunset {
@@ -130,7 +173,16 @@
     --accent: 45 85% 60%;
     --muted: 320 25% 22%;
     --muted-foreground: 25 25% 70%;
+    --card: 330 30% 20%;
+    --card-foreground: 25 35% 92%;
+    --border: 330 25% 30%;
+    --input: 330 25% 24%;
+    --ring: 18 80% 60%;
     --gradient-theme: var(--gradient-sunset);
+    --gradient-card: linear-gradient(145deg, hsl(330, 35%, 22%) 0%, hsl(18, 40%, 20%) 100%);
+    --gradient-button-primary: linear-gradient(135deg, hsl(18, 80%, 60%) 0%, hsl(10, 75%, 50%) 100%);
+    --gradient-button-secondary: linear-gradient(135deg, hsl(330, 55%, 45%) 0%, hsl(300, 50%, 38%) 100%);
+    --gradient-button-accent: linear-gradient(135deg, hsl(45, 85%, 60%) 0%, hsl(30, 80%, 50%) 100%);
   }
 
   .theme-slate {
@@ -141,7 +193,16 @@
     --accent: 45 80% 50%;
     --muted: 220 15% 18%;
     --muted-foreground: 0 0% 70%;
+    --card: 220 15% 16%;
+    --card-foreground: 0 0% 92%;
+    --border: 220 10% 28%;
+    --input: 220 12% 20%;
+    --ring: 45 80% 50%;
     --gradient-theme: var(--gradient-slate);
+    --gradient-card: linear-gradient(145deg, hsl(220, 15%, 18%) 0%, hsl(210, 15%, 14%) 100%);
+    --gradient-button-primary: linear-gradient(135deg, hsl(210, 25%, 45%) 0%, hsl(200, 25%, 35%) 100%);
+    --gradient-button-secondary: linear-gradient(135deg, hsl(200, 20%, 35%) 0%, hsl(190, 20%, 30%) 100%);
+    --gradient-button-accent: linear-gradient(135deg, hsl(45, 80%, 50%) 0%, hsl(35, 70%, 45%) 100%);
   }
 }
 
@@ -190,14 +251,14 @@
 
   .btn-christmas-red {
     @apply font-semibold px-8 py-4 rounded-xl transition-all duration-300;
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(0, 55%, 38%) 100%);
+    background: var(--gradient-button-primary);
     color: hsl(var(--primary-foreground));
-    box-shadow: var(--shadow-button), var(--shadow-glow-red);
+    box-shadow: var(--shadow-button), var(--shadow-glow-primary);
   }
 
   .btn-christmas-red:hover {
     transform: translateY(-2px) scale(1.02);
-    box-shadow: var(--shadow-button), 0 0 40px hsl(0, 65%, 45%, 0.7);
+    box-shadow: var(--shadow-button), 0 0 40px hsl(var(--primary) / 0.7);
   }
 
   .btn-christmas-red:active {
@@ -206,14 +267,14 @@
 
   .btn-christmas-green {
     @apply font-semibold px-8 py-4 rounded-xl transition-all duration-300;
-    background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(145, 40%, 25%) 100%);
+    background: var(--gradient-button-secondary);
     color: hsl(var(--secondary-foreground));
-    box-shadow: var(--shadow-button), var(--shadow-glow-green);
+    box-shadow: var(--shadow-button), var(--shadow-glow-secondary);
   }
 
   .btn-christmas-green:hover {
     transform: translateY(-2px) scale(1.02);
-    box-shadow: var(--shadow-button), 0 0 40px hsl(145, 45%, 30%, 0.7);
+    box-shadow: var(--shadow-button), 0 0 40px hsl(var(--secondary) / 0.7);
   }
 
   .btn-christmas-green:active {
@@ -222,13 +283,13 @@
 
   .btn-christmas-gold {
     @apply font-semibold px-6 py-3 rounded-lg transition-all duration-300;
-    background: var(--gradient-gold);
+    background: var(--gradient-button-accent);
     color: hsl(0, 30%, 15%);
     box-shadow: var(--shadow-button);
   }
 
   .btn-christmas-gold:hover {
-    box-shadow: var(--shadow-button), var(--shadow-glow-gold);
+    box-shadow: var(--shadow-button), var(--shadow-glow-accent);
     transform: translateY(-1px);
   }
 
