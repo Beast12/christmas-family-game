@@ -100,7 +100,9 @@ const Index = () => {
   useEffect(() => {
     const themeClasses = themeOptions.map((option) => `theme-${option.id}`);
     document.body.classList.remove(...themeClasses);
+    document.documentElement.classList.remove(...themeClasses);
     document.body.classList.add(`theme-${theme}`);
+    document.documentElement.classList.add(`theme-${theme}`);
   }, [theme]);
 
   useEffect(() => {
