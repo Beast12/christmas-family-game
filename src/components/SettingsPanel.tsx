@@ -1,12 +1,13 @@
 import { X, Shuffle } from 'lucide-react';
 import { Language, t } from '@/lib/i18n';
+import { ThemeId, themeOptions } from '@/lib/themes';
 
 interface SettingsPanelProps {
   isOpen: boolean;
   onClose: () => void;
   onShuffle: () => void;
-  theme: 'christmas' | 'winter' | 'peppermint' | 'midnight';
-  onThemeChange: (value: 'christmas' | 'winter' | 'peppermint' | 'midnight') => void;
+  theme: ThemeId;
+  onThemeChange: (value: ThemeId) => void;
   maxGifts: number;
   onMaxChange: (value: number) => void;
   riddleMinutes: number;
@@ -191,13 +192,14 @@ const SettingsPanel = ({
             <span className="text-card-foreground font-semibold text-sm">{t(language, 'theme')}</span>
             <select
               value={theme}
-              onChange={(e) => onThemeChange(e.target.value as 'christmas' | 'winter' | 'peppermint' | 'midnight')}
+              onChange={(e) => onThemeChange(e.target.value as ThemeId)}
               className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent capitalize"
             >
-              <option value="christmas">{t(language, 'themeWarm')}</option>
-              <option value="winter">{t(language, 'themeWinter')}</option>
-              <option value="peppermint">{t(language, 'themePeppermint')}</option>
-              <option value="midnight">{t(language, 'themeMidnight')}</option>
+              {themeOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {t(language, option.labelKey)}
+                </option>
+              ))}
             </select>
           </div>
 

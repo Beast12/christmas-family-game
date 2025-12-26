@@ -7,8 +7,10 @@ import SettingsPanel from '@/components/SettingsPanel';
 import PlayerSpotlight from '@/components/PlayerSpotlight';
 import GiftTracker from '@/components/GiftTracker';
 import LootBoxModal from '@/components/LootBoxModal';
+import ThemeOrnaments from '@/components/ThemeOrnaments';
 import { Language } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
+import { ThemeId, themeOptions, isChristmasTheme, isThemeId } from '@/lib/themes';
 
 type Player = {
   name: string;
@@ -35,7 +37,11 @@ const Index = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [theme, setTheme] = useState<'christmas' | 'winter' | 'peppermint' | 'midnight'>('christmas');
+  const [theme, setTheme] = useState<ThemeId>(() => {
+    if (typeof window === 'undefined') return 'christmas-eve';
+    const stored = window.localStorage.getItem('theme');
+    return stored && isThemeId(stored) ? stored : 'christmas-eve';
+  });
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [language, setLanguage] = useState<Language>('nl');
   const [lootBoxReward, setLootBoxReward] = useState<{ player: string; message: string } | null>(null);
@@ -76,16 +82,27 @@ const Index = () => {
   }, [initializeQuestions]);
 
   useEffect(() => {
-    const title = language === 'nl' ? 'Kerstavond Familiespel' : 'Christmas Eve Family Game';
+    const titles: Record<ThemeId, { nl: string; en: string }> = {
+      'christmas-eve': { nl: 'Kerstavond Familiespel', en: 'Christmas Eve Family Game' },
+      'christmas-day': { nl: 'Kerstdag Familiequiz', en: 'Christmas Day Family Quiz' },
+      easter: { nl: 'Pasen Familiequiz', en: 'Easter Family Quiz' },
+      summer: { nl: 'Zomer Quizavond', en: 'Summer Quiz Night' },
+      cozy: { nl: 'Familiequiz', en: 'Family Quiz' },
+      sunset: { nl: 'Quizavond', en: 'Quiz Night' },
+      slate: { nl: 'Gezelschapsspel', en: 'Game Night' },
+    };
+    const title = language === 'nl' ? titles[theme].nl : titles[theme].en;
     document.title = title;
-  }, [language]);
+  }, [language, theme]);
 
   useEffect(() => {
-    const themeClasses = ['theme-winter', 'theme-peppermint', 'theme-midnight'];
+    const themeClasses = themeOptions.map((option) => `theme-${option.id}`);
     document.body.classList.remove(...themeClasses);
-    if (theme !== 'christmas') {
-      document.body.classList.add(`theme-${theme}`);
-    }
+    document.body.classList.add(`theme-${theme}`);
+  }, [theme]);
+
+  useEffect(() => {
+    window.localStorage.setItem('theme', theme);
   }, [theme]);
 
   const handleNextQuestion = () => {
@@ -104,7 +121,7 @@ const Index = () => {
     initializeQuestions();
   };
 
-  const handleThemeChange = (value: 'christmas' | 'winter' | 'peppermint' | 'midnight') => {
+  const handleThemeChange = (value: ThemeId) => {
     setTheme(value);
   };
 
@@ -253,11 +270,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Snowflakes />
+      <ThemeOrnaments theme={theme} />
+      {isChristmasTheme(theme) && <Snowflakes />}
       
       <Header
         onOpenSettings={() => setSettingsOpen(true)}
         language={language}
+        theme={theme}
       />
 
       <div className="px-4">
