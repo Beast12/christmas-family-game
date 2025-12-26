@@ -51,7 +51,7 @@ jobs:
         run: |
           git add package.json package-lock.json CHANGELOG.md
           git commit -m "chore(release): v${VERSION}"
-          git tag "v${VERSION}"
+          git tag -a "v${VERSION}" -m "chore(release): v${VERSION}"
 
       - name: Push changes and tags
         env:
