@@ -59,6 +59,13 @@ jobs:
         run: |
           git push origin HEAD:main --follow-tags
 
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.bump.outputs.version }}
+        run: |
+          gh release create "v${VERSION}" --title "v${VERSION}" --notes-file CHANGELOG.md
+
   image:
     if: github.actor != 'github-actions[bot]'
     needs: release
