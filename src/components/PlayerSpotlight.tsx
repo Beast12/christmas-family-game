@@ -10,10 +10,6 @@ const PlayerSpotlight = ({ players, activeIndex, language }: PlayerSpotlightProp
   const activeName = players[activeIndex]?.name ?? '';
   return (
     <section className="relative max-w-4xl mx-auto mb-6">
-      <div className="text-center text-foreground/70 text-sm mb-2">
-        🎯 {t(language, 'currentTurn')}: <span className="font-semibold text-foreground">{activeName}</span>
-      </div>
-
       <div className="flex gap-3 justify-center items-end">
         {players.map((player, index) => {
           const isActive = index === activeIndex;

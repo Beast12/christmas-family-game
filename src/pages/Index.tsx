@@ -444,7 +444,7 @@ const Index = () => {
       <Header
         onOpenSettings={() => setSettingsOpen(true)}
         language={language}
-        theme={theme}
+        currentPlayer={players[currentPlayerIndex].name}
       />
 
       <div className="px-4">

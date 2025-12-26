@@ -125,7 +125,7 @@ const SettingsPanel = ({
             <select
               value={language}
               onChange={(e) => onLanguageChange(e.target.value as Language)}
-              className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              className="theme-select rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             >
               <option value="nl">Nederlands</option>
               <option value="en">English</option>
@@ -141,7 +141,7 @@ const SettingsPanel = ({
             <select
               value={selectedQuestionPoolId}
               onChange={(e) => onQuestionPoolChange(e.target.value)}
-              className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              className="theme-select rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             >
               {questionPools.map((pool) => (
                 <option key={pool.id} value={pool.id}>
@@ -160,7 +160,7 @@ const SettingsPanel = ({
               <select
                 value={questionAudience}
                 onChange={(e) => onQuestionAudienceChange(e.target.value as 'kids' | 'adults')}
-                className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                className="theme-select rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 <option value="kids">{t(language, 'audienceKids')}</option>
                 <option value="adults">{t(language, 'audienceAdults')}</option>
@@ -197,7 +197,7 @@ const SettingsPanel = ({
               <select
                 value={aiCount}
                 onChange={(e) => setAiCount(Number(e.target.value))}
-                className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                className="theme-select rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 {[20, 30, 40, 50, 75, 100].map((count) => (
                   <option key={count} value={count}>
@@ -398,7 +398,7 @@ const SettingsPanel = ({
             <select
               value={theme}
               onChange={(e) => onThemeChange(e.target.value as ThemeId)}
-              className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent capitalize"
+              className="theme-select rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent capitalize"
             >
               {themeOptions.map((option) => (
                 <option key={option.id} value={option.id}>
