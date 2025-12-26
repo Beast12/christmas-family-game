@@ -13,6 +13,9 @@ interface SettingsPanelProps {
   onRiddleMinutesChange: (value: number) => void;
   threshold: number;
   onThresholdChange: (value: number) => void;
+  questionPools: { id: string; name: string }[];
+  selectedQuestionPoolId: string;
+  onQuestionPoolChange: (value: string) => void;
   players: { name: string }[];
   onPlayerNameChange: (index: number, name: string) => void;
   onPlayerAdd: () => void;
@@ -33,6 +36,9 @@ const SettingsPanel = ({
   onRiddleMinutesChange,
   threshold,
   onThresholdChange,
+  questionPools,
+  selectedQuestionPoolId,
+  onQuestionPoolChange,
   players,
   onPlayerNameChange,
   onPlayerAdd,
@@ -72,6 +78,25 @@ const SettingsPanel = ({
             >
               <option value="nl">Nederlands</option>
               <option value="en">English</option>
+            </select>
+          </div>
+
+          {/* Question pool */}
+          <div className="w-full flex items-center justify-between gap-4 p-4 rounded-xl bg-card-foreground/5">
+            <div className="text-card-foreground flex flex-col">
+              <span className="font-semibold text-sm">{t(language, 'questionPoolLabel')}</span>
+              <span className="text-xs text-card-foreground/60">{t(language, 'questionPoolSub')}</span>
+            </div>
+            <select
+              value={selectedQuestionPoolId}
+              onChange={(e) => onQuestionPoolChange(e.target.value)}
+              className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+              {questionPools.map((pool) => (
+                <option key={pool.id} value={pool.id}>
+                  {pool.name}
+                </option>
+              ))}
             </select>
           </div>
 

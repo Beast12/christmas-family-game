@@ -23,6 +23,9 @@ const Header = ({ onOpenSettings, language }: HeaderProps) => {
       <p className="text-foreground/60 mt-2 text-sm">
         {language === 'nl' ? '✨ Vragen, raadsels & plezier voor het hele gezin ✨' : '✨ Questions, riddles & fun for the whole family ✨'}
       </p>
+      <p className="text-foreground/50 mt-2 text-xs">
+        {t(language, 'versionLabel')}: v{__APP_VERSION__}
+      </p>
       
       {/* Settings button */}
       <button

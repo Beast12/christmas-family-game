@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
+      tag: ${{ steps.bump.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,11 +32,26 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Bump version (patch) and tag
+      - name: Bump version (patch)
+        id: bump
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          npm version patch -m "chore(release): v%s"
+          npm version patch --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Update changelog
+        run: npx auto-changelog --package --output CHANGELOG.md
+
+      - name: Commit and tag release
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
+        run: |
+          git add package.json package-lock.json CHANGELOG.md
+          git commit -m "chore(release): v${VERSION}"
+          git tag "v${VERSION}"
 
       - name: Push changes and tags
         env:
@@ -54,6 +72,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Checkout release tag
+        run: |
+          git fetch --tags origin
+          git checkout "${{ needs.release.outputs.tag }}"
+
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -62,12 +85,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Get package version
-        id: pkg
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Compute image name
         id: image
@@ -89,4 +106,4 @@ jobs:
           push: true
           tags: |
             ${{ steps.image.outputs.name }}:latest
-            ${{ steps.image.outputs.name }}:v${{ steps.pkg.outputs.version }}
+            ${{ steps.image.outputs.name }}:v${{ needs.release.outputs.version }}

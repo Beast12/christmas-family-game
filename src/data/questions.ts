@@ -137,8 +137,28 @@ const rawQuestions: RawQuestion[] = [
   { id: 100, category: { nl: 'Reflectie', en: 'Reflection' }, question: { nl: 'Waar wil je dit jaar vaker “ja” tegen zeggen?', en: 'What do you want to say “yes” to more often this year?' } },
 ];
 
-export function getQuestions(language: Language): Question[] {
-  return rawQuestions.map((q) => ({
+const questionPools = [
+  {
+    id: 'christmas',
+    name: { nl: 'Kerstvragen', en: 'Christmas Questions' },
+    questions: rawQuestions,
+  },
+] as const;
+
+export type QuestionPoolId = (typeof questionPools)[number]['id'];
+
+export function getQuestionPools(language: Language) {
+  return questionPools.map((pool) => ({
+    id: pool.id,
+    name: pool.name[language],
+  }));
+}
+
+export function getQuestions(language: Language, poolId: QuestionPoolId = 'christmas'): Question[] {
+  const selectedPool =
+    questionPools.find((pool) => pool.id === poolId) ?? questionPools[0];
+
+  return selectedPool.questions.map((q) => ({
     id: q.id,
     category: q.category[language],
     question: q.question[language],

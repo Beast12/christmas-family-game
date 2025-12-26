@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getQuestions, shuffleArray, Question } from '@/data/questions';
+import { getQuestions, getQuestionPools, shuffleArray, Question, QuestionPoolId } from '@/data/questions';
 import Snowflakes from '@/components/Snowflakes';
 import Header from '@/components/Header';
 import QuestionCard from '@/components/QuestionCard';
@@ -40,6 +40,7 @@ const Index = () => {
   const [language, setLanguage] = useState<Language>('nl');
   const [lootBoxReward, setLootBoxReward] = useState<{ player: string; message: string } | null>(null);
   const [riddleMinutes, setRiddleMinutes] = useState(1);
+  const [questionPoolId, setQuestionPoolId] = useState<QuestionPoolId>('christmas');
 
   const rewardMessages: Record<Language, string[]> = {
     nl: [
@@ -60,13 +61,15 @@ const Index = () => {
     ],
   };
 
+  const questionPools = getQuestionPools(language);
+
   const initializeQuestions = useCallback(() => {
-    const bank = getQuestions(language);
+    const bank = getQuestions(language, questionPoolId);
     const shuffled = shuffleArray(bank);
     setTotalQuestions(bank.length);
     setCurrentQuestion(shuffled[0]);
     setRemainingQuestions(shuffled.slice(1));
-  }, [language]);
+  }, [language, questionPoolId]);
 
   useEffect(() => {
     initializeQuestions();
@@ -295,20 +298,23 @@ const Index = () => {
         language={language}
       />
 
-        <SettingsPanel
-          isOpen={settingsOpen}
+      <SettingsPanel
+        isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}
         onShuffle={handleShuffle}
         theme={theme}
-          onThemeChange={handleThemeChange}
-          maxGifts={maxGifts}
-          onMaxChange={handleAdjustMaxGifts}
-          riddleMinutes={riddleMinutes}
-          onRiddleMinutesChange={handleAdjustRiddleMinutes}
-          threshold={threshold}
-          onThresholdChange={handleAdjustThreshold}
-          language={language}
-          onLanguageChange={setLanguage}
+        onThemeChange={handleThemeChange}
+        maxGifts={maxGifts}
+        onMaxChange={handleAdjustMaxGifts}
+        riddleMinutes={riddleMinutes}
+        onRiddleMinutesChange={handleAdjustRiddleMinutes}
+        threshold={threshold}
+        onThresholdChange={handleAdjustThreshold}
+        questionPools={questionPools}
+        selectedQuestionPoolId={questionPoolId}
+        onQuestionPoolChange={(value) => setQuestionPoolId(value as QuestionPoolId)}
+        language={language}
+        onLanguageChange={setLanguage}
         players={players}
         onPlayerNameChange={handlePlayerNameChange}
         onPlayerAdd={handlePlayerAdd}
