@@ -138,6 +138,8 @@ const Index = () => {
     document.documentElement.classList.remove(...themeClasses);
     document.body.classList.add(`theme-${theme}`);
     document.documentElement.classList.add(`theme-${theme}`);
+    document.body.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
   useEffect(() => {

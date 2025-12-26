@@ -77,7 +77,7 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  :root.theme-christmas-eve {
+  :root[data-theme='christmas-eve'] {
     --gradient-theme: var(--gradient-christmas-eve);
     --gradient-card: linear-gradient(145deg, hsl(45, 30%, 97%) 0%, hsl(45, 25%, 92%) 100%);
     --gradient-button-primary: linear-gradient(135deg, hsl(0, 65%, 45%) 0%, hsl(0, 55%, 38%) 100%);
@@ -85,7 +85,7 @@
     --gradient-button-accent: var(--gradient-gold);
   }
 
-  :root.theme-christmas-day {
+  :root[data-theme='christmas-day'] {
     --background: 30 55% 92%;
     --foreground: 0 35% 20%;
     --primary: 0 70% 55%;
@@ -105,7 +105,7 @@
     --gradient-button-accent: linear-gradient(135deg, hsl(45, 85%, 55%) 0%, hsl(30, 75%, 45%) 100%);
   }
 
-  :root.theme-easter {
+  :root[data-theme='easter'] {
     --background: 140 40% 92%;
     --foreground: 150 20% 18%;
     --primary: 280 55% 60%;
@@ -125,7 +125,7 @@
     --gradient-button-accent: linear-gradient(135deg, hsl(35, 85%, 60%) 0%, hsl(20, 80%, 52%) 100%);
   }
 
-  :root.theme-summer {
+  :root[data-theme='summer'] {
     --background: 190 70% 90%;
     --foreground: 200 20% 18%;
     --primary: 15 80% 55%;
@@ -145,7 +145,7 @@
     --gradient-button-accent: linear-gradient(135deg, hsl(45, 90%, 55%) 0%, hsl(30, 85%, 50%) 100%);
   }
 
-  :root.theme-cozy {
+  :root[data-theme='cozy'] {
     --background: 25 35% 12%;
     --foreground: 30 30% 92%;
     --primary: 20 65% 45%;
@@ -165,7 +165,7 @@
     --gradient-button-accent: linear-gradient(135deg, hsl(40, 80%, 55%) 0%, hsl(25, 75%, 45%) 100%);
   }
 
-  :root.theme-sunset {
+  :root[data-theme='sunset'] {
     --background: 330 35% 15%;
     --foreground: 25 35% 92%;
     --primary: 18 80% 60%;
@@ -185,7 +185,7 @@
     --gradient-button-accent: linear-gradient(135deg, hsl(45, 85%, 60%) 0%, hsl(30, 80%, 50%) 100%);
   }
 
-  :root.theme-slate {
+  :root[data-theme='slate'] {
     --background: 220 15% 12%;
     --foreground: 0 0% 95%;
     --primary: 210 25% 45%;
