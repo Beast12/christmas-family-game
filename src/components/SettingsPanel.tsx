@@ -22,13 +22,15 @@ interface SettingsPanelProps {
   onQuestionPoolChange: (value: string) => void;
   questionAudience: 'kids' | 'adults';
   onQuestionAudienceChange: (value: 'kids' | 'adults') => void;
-  customPools: { id: string; name: string }[];
+  customPools: { id: string; name: string; prompt: string; count: number }[];
   onRemoveCustomPool: (id: string) => void;
   onGenerateAiPool: (data: {
     name: string;
     prompt: string;
+    count: number;
     apiKey: string;
     rememberKey: boolean;
+    replaceId?: string;
   }) => void;
   aiLoading: boolean;
   aiError: string | null;
@@ -78,6 +80,7 @@ const SettingsPanel = ({
   const [aiPoolName, setAiPoolName] = useState('');
   const [aiPrompt, setAiPrompt] = useState('');
   const [aiKey, setAiKey] = useState(apiKeyPrefill ?? '');
+  const [aiCount, setAiCount] = useState(50);
   const [rememberKey, setRememberKey] = useState(!!apiKeyPrefill);
 
   useEffect(() => {
@@ -90,6 +93,7 @@ const SettingsPanel = ({
     onGenerateAiPool({
       name: aiPoolName.trim(),
       prompt: aiPrompt.trim(),
+      count: aiCount,
       apiKey: aiKey.trim(),
       rememberKey,
     });
@@ -185,6 +189,23 @@ const SettingsPanel = ({
               className="w-full min-h-[90px] rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               aria-label={t(language, 'aiPoolPromptLabel')}
             />
+            <div className="flex items-center justify-between gap-4">
+              <div className="text-card-foreground flex flex-col">
+                <span className="font-semibold text-sm">{t(language, 'aiPoolCountLabel')}</span>
+                <span className="text-xs text-card-foreground/60">{t(language, 'aiPoolCountSub')}</span>
+              </div>
+              <select
+                value={aiCount}
+                onChange={(e) => setAiCount(Number(e.target.value))}
+                className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                {[20, 30, 40, 50, 75, 100].map((count) => (
+                  <option key={count} value={count}>
+                    {count}
+                  </option>
+                ))}
+              </select>
+            </div>
             <input
               type="password"
               value={aiKey}
@@ -231,12 +252,34 @@ const SettingsPanel = ({
                 {customPools.map((pool) => (
                   <div key={pool.id} className="flex items-center justify-between gap-2">
                     <span className="text-sm text-card-foreground">{pool.name}</span>
-                    <button
-                      onClick={() => onRemoveCustomPool(pool.id)}
-                      className="px-2 py-1 rounded-md text-xs font-semibold border border-card-foreground/30 text-card-foreground hover:bg-card-foreground/10"
-                    >
-                      {t(language, 'aiPoolRemove')}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() =>
+                          onGenerateAiPool({
+                            name: pool.name,
+                            prompt: aiPrompt.trim() || pool.prompt,
+                            count: aiCount || pool.count,
+                            apiKey: aiKey.trim(),
+                            rememberKey,
+                            replaceId: pool.id,
+                          })
+                        }
+                        disabled={aiLoading || !aiKey.trim()}
+                        className={`px-2 py-1 rounded-md text-xs font-semibold border transition-colors ${
+                          aiLoading || !aiKey.trim()
+                            ? 'border-card-foreground/15 text-card-foreground/40 cursor-not-allowed'
+                            : 'border-card-foreground/30 text-card-foreground hover:bg-card-foreground/10'
+                        }`}
+                      >
+                        {t(language, 'aiPoolRegenerate')}
+                      </button>
+                      <button
+                        onClick={() => onRemoveCustomPool(pool.id)}
+                        className="px-2 py-1 rounded-md text-xs font-semibold border border-card-foreground/30 text-card-foreground hover:bg-card-foreground/10"
+                      >
+                        {t(language, 'aiPoolRemove')}
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

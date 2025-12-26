@@ -28,6 +28,8 @@ type CustomPool = {
   name: string;
   questions: Question[];
   createdAt: string;
+  prompt: string;
+  count: number;
 };
 
 const CUSTOM_POOLS_STORAGE = 'customPools';
@@ -177,9 +179,9 @@ const Index = () => {
     }
   };
 
-  const buildAiPrompt = (prompt: string, languageLabel: string) => {
+  const buildAiPrompt = (prompt: string, languageLabel: string, count: number) => {
     return [
-      `Create a set of 50 party-game questions for a family quiz.`,
+      `Create a set of ${count} party-game questions for a family quiz.`,
       `Language: ${languageLabel}.`,
       `Questions can be uncensored.`,
       `Mix categories such as trivia, actions, dilemmas, reflections, or playful challenges.`,
@@ -205,8 +207,10 @@ const Index = () => {
   const handleGenerateAiPool = async (data: {
     name: string;
     prompt: string;
+    count: number;
     apiKey: string;
     rememberKey: boolean;
+    replaceId?: string;
   }) => {
     setAiLoading(true);
     setAiError(null);
@@ -220,7 +224,7 @@ const Index = () => {
       }
 
       const languageLabel = language === 'nl' ? 'Dutch' : 'English';
-      const fullPrompt = buildAiPrompt(data.prompt, languageLabel);
+      const fullPrompt = buildAiPrompt(data.prompt, languageLabel, data.count);
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -265,14 +269,19 @@ const Index = () => {
       }
 
       const newPool: CustomPool = {
-        id: `custom-${Date.now()}`,
+        id: data.replaceId ?? `custom-${Date.now()}`,
         name: data.name,
         questions: mappedQuestions,
         createdAt: new Date().toISOString(),
+        prompt: data.prompt,
+        count: data.count,
       };
 
-      setCustomPools((prev) => [newPool, ...prev]);
-      setQuestionPoolId(newPool.id as QuestionPoolId);
+      setCustomPools((prev) => {
+        const filtered = data.replaceId ? prev.filter((pool) => pool.id !== data.replaceId) : prev;
+        return [newPool, ...filtered];
+      });
+      setQuestionPoolId(newPool.id);
     } catch (error) {
       setAiError('error');
     } finally {
