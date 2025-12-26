@@ -47,6 +47,7 @@ const Index = () => {
   const [lootBoxReward, setLootBoxReward] = useState<{ player: string; message: string } | null>(null);
   const [riddleMinutes, setRiddleMinutes] = useState(1);
   const [questionPoolId, setQuestionPoolId] = useState<QuestionPoolId>('christmas');
+  const [giftsEnabled, setGiftsEnabled] = useState(true);
 
   const rewardMessages: Record<Language, string[]> = {
     nl: [
@@ -162,6 +163,7 @@ const Index = () => {
   };
 
   const handleAwardGift = (playerIndex: number, count: number = 1, { skipLoot }: { skipLoot?: boolean } = {}) => {
+    if (!giftsEnabled) return;
     setPlayers(prev => {
       const target = prev[playerIndex];
       if (!target) return prev;
@@ -218,6 +220,7 @@ const Index = () => {
   };
 
   const handleCorrect = (playerIndex: number) => {
+    if (!giftsEnabled) return;
     setPlayers(prev => {
       const player = prev[playerIndex];
       if (!player) return prev;
@@ -281,22 +284,24 @@ const Index = () => {
 
       <div className="px-4">
         <PlayerSpotlight
-          players={players.map(player => ({ ...player, maxGifts }))}
+          players={players.map(player => giftsEnabled ? ({ ...player, maxGifts }) : ({ name: player.name }))}
           activeIndex={currentPlayerIndex}
           language={language}
         />
-        <GiftTracker
-          players={players}
-          activeIndex={currentPlayerIndex}
-          maxGifts={maxGifts}
-          threshold={threshold}
-          onAward={(index) => handleAwardGift(index)}
-          onRemove={(index) => handleRemoveGift(index)}
-          onCorrect={(index) => handleCorrect(index)}
-          onSkip={(index) => handleUseSkip(index)}
-          onJoker={(index) => handleUseJoker(index)}
-          language={language}
-        />
+        {giftsEnabled && (
+          <GiftTracker
+            players={players}
+            activeIndex={currentPlayerIndex}
+            maxGifts={maxGifts}
+            threshold={threshold}
+            onAward={(index) => handleAwardGift(index)}
+            onRemove={(index) => handleRemoveGift(index)}
+            onCorrect={(index) => handleCorrect(index)}
+            onSkip={(index) => handleUseSkip(index)}
+            onJoker={(index) => handleUseJoker(index)}
+            language={language}
+          />
+        )}
       </div>
 
       <main className="flex-1 flex items-center justify-center px-4 pb-12">
@@ -317,21 +322,23 @@ const Index = () => {
         language={language}
       />
 
-      <SettingsPanel
-        isOpen={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        onShuffle={handleShuffle}
+        <SettingsPanel
+          isOpen={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          onShuffle={handleShuffle}
         theme={theme}
         onThemeChange={handleThemeChange}
         maxGifts={maxGifts}
         onMaxChange={handleAdjustMaxGifts}
         riddleMinutes={riddleMinutes}
         onRiddleMinutesChange={handleAdjustRiddleMinutes}
-        threshold={threshold}
-        onThresholdChange={handleAdjustThreshold}
-        questionPools={questionPools}
-        selectedQuestionPoolId={questionPoolId}
-        onQuestionPoolChange={(value) => setQuestionPoolId(value as QuestionPoolId)}
+          threshold={threshold}
+          onThresholdChange={handleAdjustThreshold}
+          giftsEnabled={giftsEnabled}
+          onGiftsEnabledChange={setGiftsEnabled}
+          questionPools={questionPools}
+          selectedQuestionPoolId={questionPoolId}
+          onQuestionPoolChange={(value) => setQuestionPoolId(value as QuestionPoolId)}
         language={language}
         onLanguageChange={setLanguage}
         players={players}

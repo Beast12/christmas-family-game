@@ -14,6 +14,8 @@ interface SettingsPanelProps {
   onRiddleMinutesChange: (value: number) => void;
   threshold: number;
   onThresholdChange: (value: number) => void;
+  giftsEnabled: boolean;
+  onGiftsEnabledChange: (value: boolean) => void;
   questionPools: { id: string; name: string }[];
   selectedQuestionPoolId: string;
   onQuestionPoolChange: (value: string) => void;
@@ -37,6 +39,8 @@ const SettingsPanel = ({
   onRiddleMinutesChange,
   threshold,
   onThresholdChange,
+  giftsEnabled,
+  onGiftsEnabledChange,
   questionPools,
   selectedQuestionPoolId,
   onQuestionPoolChange,
@@ -101,6 +105,22 @@ const SettingsPanel = ({
             </select>
           </div>
 
+          {/* Gifts toggle */}
+          <div className="w-full flex items-center justify-between gap-4 p-4 rounded-xl bg-card-foreground/5">
+            <div className="text-card-foreground flex flex-col">
+              <span className="font-semibold text-sm">{t(language, 'giftsEnabledLabel')}</span>
+              <span className="text-xs text-card-foreground/60">{t(language, 'giftsEnabledSub')}</span>
+            </div>
+            <label className="inline-flex items-center gap-2 text-sm text-card-foreground/70">
+              <input
+                type="checkbox"
+                checked={giftsEnabled}
+                onChange={(e) => onGiftsEnabledChange(e.target.checked)}
+                className="h-4 w-4 rounded border border-card-foreground/30 bg-card-foreground/10 text-primary focus:ring-2 focus:ring-accent"
+              />
+            </label>
+          </div>
+
           {/* Player names */}
           <div className="p-4 rounded-xl bg-card-foreground/5">
             <div className="flex items-center justify-between mb-3">
@@ -141,20 +161,22 @@ const SettingsPanel = ({
             </div>
           </div>
 
-          {/* Max gifts per child */}
-          <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
-            <div className="text-card-foreground flex flex-col">
-              <span className="font-semibold text-sm">{t(language, 'maxPerChild')}</span>
-              <span className="text-xs text-card-foreground/60">{t(language, 'maxPerChildSub')}</span>
-            </div>
-            <input
-              type="number"
-              min={0}
-              value={maxGifts}
-              onChange={(e) => onMaxChange(parseInt(e.target.value, 10) || 0)}
-              className="w-20 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-            />
-          </div>
+          {giftsEnabled && (
+            <>
+              {/* Max gifts per player */}
+              <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
+                <div className="text-card-foreground flex flex-col">
+                  <span className="font-semibold text-sm">{t(language, 'maxPerChild')}</span>
+                  <span className="text-xs text-card-foreground/60">{t(language, 'maxPerChildSub')}</span>
+                </div>
+                <input
+                  type="number"
+                  min={0}
+                  value={maxGifts}
+                  onChange={(e) => onMaxChange(parseInt(e.target.value, 10) || 0)}
+                  className="w-20 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                />
+              </div>
 
           {/* Riddle timer minutes */}
           <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
@@ -172,20 +194,22 @@ const SettingsPanel = ({
             />
           </div>
 
-          {/* Threshold for gifts */}
-          <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
-            <div className="text-card-foreground flex flex-col">
-              <span className="font-semibold text-sm">{t(language, 'thresholdLabel')}</span>
-              <span className="text-xs text-card-foreground/60">{t(language, 'thresholdSub')}</span>
-            </div>
-            <input
-              type="number"
-              min={1}
-              value={threshold}
-              onChange={(e) => onThresholdChange(parseInt(e.target.value, 10) || 1)}
-              className="w-20 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-            />
-          </div>
+              {/* Threshold for gifts */}
+              <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
+                <div className="text-card-foreground flex flex-col">
+                  <span className="font-semibold text-sm">{t(language, 'thresholdLabel')}</span>
+                  <span className="text-xs text-card-foreground/60">{t(language, 'thresholdSub')}</span>
+                </div>
+                <input
+                  type="number"
+                  min={1}
+                  value={threshold}
+                  onChange={(e) => onThresholdChange(parseInt(e.target.value, 10) || 1)}
+                  className="w-20 rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                />
+              </div>
+            </>
+          )}
 
           {/* Theme select */}
           <div className="w-full flex items-center justify-between p-4 rounded-xl bg-card-foreground/5">
