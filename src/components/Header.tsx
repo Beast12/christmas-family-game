@@ -5,14 +5,23 @@ interface HeaderProps {
   onOpenSettings: () => void;
   language: Language;
   currentPlayer: string;
+  supportUrl: string;
 }
 
-const Header = ({ onOpenSettings, language, currentPlayer }: HeaderProps) => {
+const Header = ({ onOpenSettings, language, currentPlayer, supportUrl }: HeaderProps) => {
   return (
     <header className="text-center py-8 relative">
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground drop-shadow-lg">
         {t(language, 'currentTurn')}: {currentPlayer}
       </h1>
+      <a
+        href={supportUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-3 inline-flex items-center gap-2 rounded-full bg-foreground/10 px-3 py-1 text-sm text-foreground/80 hover:text-foreground transition-colors"
+      >
+        ☕ {t(language, 'supportGame')}
+      </a>
       
       {/* Settings button */}
       <button

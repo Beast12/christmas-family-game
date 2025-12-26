@@ -77,6 +77,7 @@ const Index = () => {
     if (typeof window === 'undefined') return '';
     return window.localStorage.getItem(AI_KEY_STORAGE) ?? '';
   });
+  const supportUrl = 'https://www.buymeacoffee.com/koen1203';
 
   const rewardMessages: Record<Language, string[]> = {
     nl: [
@@ -445,6 +446,7 @@ const Index = () => {
         onOpenSettings={() => setSettingsOpen(true)}
         language={language}
         currentPlayer={players[currentPlayerIndex].name}
+        supportUrl={supportUrl}
       />
 
       <div className="px-4">
