@@ -190,6 +190,59 @@ const triviaQuestions: RawQuestion[] = [
   { id: 50, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Hoeveel letters zitten er in het alfabet?', en: 'How many letters are in the alphabet?' }, answer: { nl: '26', en: '26' } },
 ];
 
+const triviaAdultQuestions: RawQuestion[] = [
+  { id: 1, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de hoofdstad van Canada?', en: 'What is the capital of Canada?' }, answer: { nl: 'Ottawa', en: 'Ottawa' } },
+  { id: 2, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wie schreef "1984"?', en: 'Who wrote "1984"?' }, answer: { nl: 'George Orwell', en: 'George Orwell' } },
+  { id: 3, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke chemische formule heeft keukenzout?', en: 'What is the chemical formula for table salt?' }, answer: { nl: 'NaCl', en: 'NaCl' } },
+  { id: 4, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'In welk jaar begon de Tweede Wereldoorlog?', en: 'In which year did World War II begin?' }, answer: { nl: '1939', en: '1939' } },
+  { id: 5, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de grootste oceaan?', en: 'What is the largest ocean?' }, answer: { nl: 'De Stille Oceaan', en: 'The Pacific Ocean' } },
+  { id: 6, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke planeet heeft de meeste manen (recent bekend)?', en: 'Which planet currently has the most known moons?' }, answer: { nl: 'Saturnus', en: 'Saturn' } },
+  { id: 7, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de naam van de langste rivier ter wereld?', en: 'What is the name of the longest river in the world?' }, answer: { nl: 'De Nijl', en: 'The Nile' } },
+  { id: 8, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wie schilderde de "Mona Lisa"?', en: 'Who painted the "Mona Lisa"?' }, answer: { nl: 'Leonardo da Vinci', en: 'Leonardo da Vinci' } },
+  { id: 9, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke stad wordt de "Eeuwige Stad" genoemd?', en: 'Which city is known as the "Eternal City"?' }, answer: { nl: 'Rome', en: 'Rome' } },
+  { id: 10, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de grootste planeet in ons zonnestelsel?', en: 'What is the largest planet in our solar system?' }, answer: { nl: 'Jupiter', en: 'Jupiter' } },
+  { id: 11, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke stad heeft de bijnaam "The Big Apple"?', en: 'Which city is nicknamed "The Big Apple"?' }, answer: { nl: 'New York', en: 'New York' } },
+  { id: 12, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de officiële taal van Brazilië?', en: 'What is the official language of Brazil?' }, answer: { nl: 'Portugees', en: 'Portuguese' } },
+  { id: 13, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke kunststroming hoort bij Van Gogh?', en: 'Which art movement is associated with Van Gogh?' }, answer: { nl: 'Post-impressionisme', en: 'Post-Impressionism' } },
+  { id: 14, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke berg is de hoogste ter wereld?', en: 'Which mountain is the highest in the world?' }, answer: { nl: 'Mount Everest', en: 'Mount Everest' } },
+  { id: 15, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de valuta van Japan?', en: 'What is the currency of Japan?' }, answer: { nl: 'Yen', en: 'Yen' } },
+  { id: 16, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wie ontdekte de penicilline?', en: 'Who discovered penicillin?' }, answer: { nl: 'Alexander Fleming', en: 'Alexander Fleming' } },
+  { id: 17, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke zee scheidt Europa van Afrika?', en: 'Which sea separates Europe and Africa?' }, answer: { nl: 'De Middellandse Zee', en: 'The Mediterranean Sea' } },
+  { id: 18, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Hoeveel snaren heeft een viool?', en: 'How many strings does a violin have?' }, answer: { nl: '4', en: '4' } },
+  { id: 19, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'In welk land ligt de stad Marrakesh?', en: 'In which country is the city of Marrakesh?' }, answer: { nl: 'Marokko', en: 'Morocco' } },
+  { id: 20, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke planeet staat bekend om zijn ringen?', en: 'Which planet is known for its rings?' }, answer: { nl: 'Saturnus', en: 'Saturn' } },
+  { id: 21, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is het symbool voor goud?', en: 'What is the chemical symbol for gold?' }, answer: { nl: 'Au', en: 'Au' } },
+  { id: 22, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke stad is de hoofdstad van Australië?', en: 'Which city is the capital of Australia?' }, answer: { nl: 'Canberra', en: 'Canberra' } },
+  { id: 23, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wie schreef "Pride and Prejudice"?', en: 'Who wrote "Pride and Prejudice"?' }, answer: { nl: 'Jane Austen', en: 'Jane Austen' } },
+  { id: 24, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de grootste woestijn ter wereld?', en: 'What is the largest desert in the world?' }, answer: { nl: 'Antarctica', en: 'Antarctica' } },
+  { id: 25, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke stad staat bekend om zijn grachten en fietsen?', en: 'Which city is known for its canals and bicycles?' }, answer: { nl: 'Amsterdam', en: 'Amsterdam' } },
+  { id: 26, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wie was de eerste mens op de maan?', en: 'Who was the first person on the moon?' }, answer: { nl: 'Neil Armstrong', en: 'Neil Armstrong' } },
+  { id: 27, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de hoofdstad van Zweden?', en: 'What is the capital of Sweden?' }, answer: { nl: 'Stockholm', en: 'Stockholm' } },
+  { id: 28, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke zee ligt ten noorden van Rusland?', en: 'Which sea lies to the north of Russia?' }, answer: { nl: 'De Barentszzee', en: 'The Barents Sea' } },
+  { id: 29, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de kleinste onafhankelijke staat ter wereld?', en: 'What is the smallest independent state in the world?' }, answer: { nl: 'Vaticaanstad', en: 'Vatican City' } },
+  { id: 30, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke rivier stroomt door Parijs?', en: 'Which river runs through Paris?' }, answer: { nl: 'De Seine', en: 'The Seine' } },
+  { id: 31, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de hoofdstad van Turkije?', en: 'What is the capital of Turkey?' }, answer: { nl: 'Ankara', en: 'Ankara' } },
+  { id: 32, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke componist schreef de "Ode an die Freude"?', en: 'Which composer wrote "Ode to Joy"?' }, answer: { nl: 'Ludwig van Beethoven', en: 'Ludwig van Beethoven' } },
+  { id: 33, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de hardste natuurlijke stof?', en: 'What is the hardest natural substance?' }, answer: { nl: 'Diamant', en: 'Diamond' } },
+  { id: 34, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke stad is de hoofdstad van Ierland?', en: 'Which city is the capital of Ireland?' }, answer: { nl: 'Dublin', en: 'Dublin' } },
+  { id: 35, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de officiële taal van Egypte?', en: 'What is the official language of Egypt?' }, answer: { nl: 'Arabisch', en: 'Arabic' } },
+  { id: 36, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wie schilderde het plafond van de Sixtijnse Kapel?', en: 'Who painted the ceiling of the Sistine Chapel?' }, answer: { nl: 'Michelangelo', en: 'Michelangelo' } },
+  { id: 37, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de hoofdstad van Zuid-Afrika?', en: 'What is the capital of South Africa?' }, answer: { nl: 'Pretoria', en: 'Pretoria' } },
+  { id: 38, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke maanlanding vond plaats in 1969?', en: 'Which moon landing took place in 1969?' }, answer: { nl: 'Apollo 11', en: 'Apollo 11' } },
+  { id: 39, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke zee ligt tussen Griekenland en Turkije?', en: 'Which sea lies between Greece and Turkey?' }, answer: { nl: 'De Egeische Zee', en: 'The Aegean Sea' } },
+  { id: 40, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de hoofdstad van Noorwegen?', en: 'What is the capital of Norway?' }, answer: { nl: 'Oslo', en: 'Oslo' } },
+  { id: 41, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke schilder maakte "De Sterrennacht"?', en: 'Which painter made "The Starry Night"?' }, answer: { nl: 'Vincent van Gogh', en: 'Vincent van Gogh' } },
+  { id: 42, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is de hoofdstad van Mexico?', en: 'What is the capital of Mexico?' }, answer: { nl: 'Mexico-Stad', en: 'Mexico City' } },
+  { id: 43, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke gas is het meest aanwezig in de atmosfeer?', en: 'Which gas is most abundant in the atmosphere?' }, answer: { nl: 'Stikstof', en: 'Nitrogen' } },
+  { id: 44, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke zee ligt tussen Engeland en Frankrijk?', en: 'Which body of water lies between England and France?' }, answer: { nl: 'Het Kanaal', en: 'The English Channel' } },
+  { id: 45, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke stad is de hoofdstad van Zwitserland?', en: 'Which city is the capital of Switzerland?' }, answer: { nl: 'Bern', en: 'Bern' } },
+  { id: 46, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wat is het kleinste bot in het menselijk lichaam?', en: 'What is the smallest bone in the human body?' }, answer: { nl: 'De stijgbeugel', en: 'The stapes' } },
+  { id: 47, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke stad is de hoofdstad van Portugal?', en: 'Which city is the capital of Portugal?' }, answer: { nl: 'Lissabon', en: 'Lisbon' } },
+  { id: 48, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke zee ligt tussen Italië en de Balkan?', en: 'Which sea lies between Italy and the Balkans?' }, answer: { nl: 'De Adriatische Zee', en: 'The Adriatic Sea' } },
+  { id: 49, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Wie schreef "De Toverberg"?', en: 'Who wrote "The Magic Mountain"?' }, answer: { nl: 'Thomas Mann', en: 'Thomas Mann' } },
+  { id: 50, category: { nl: 'Trivia', en: 'Trivia' }, question: { nl: 'Welke bergketen loopt door Zuid-Amerika?', en: 'Which mountain range runs through South America?' }, answer: { nl: 'De Andes', en: 'The Andes' } },
+];
+
 const truthOrDareQuestions: RawQuestion[] = [
   { id: 1, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is je favoriete snack?', en: 'Truth: What is your favorite snack?' } },
   { id: 2, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 10 seconden een robotdans.', en: 'Dare: Do a robot dance for 10 seconds.' } },
@@ -243,6 +296,59 @@ const truthOrDareQuestions: RawQuestion[] = [
   { id: 50, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 10 seconden alsof je in een slow motion film zit.', en: 'Dare: Act like you are in a slow motion movie for 10 seconds.' } },
 ];
 
+const truthOrDareAdultQuestions: RawQuestion[] = [
+  { id: 1, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is een doel dat je dit jaar echt wilt halen?', en: 'Truth: What is a goal you really want to achieve this year?' } },
+  { id: 2, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Geef iemand een korte toast alsof je een speech geeft.', en: 'Dare: Give someone a short toast like a speech.' } },
+  { id: 3, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Waar ben je stiekem nog onzeker over?', en: 'Truth: What are you still secretly unsure about?' } },
+  { id: 4, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe een mini-karaoke van 20 seconden.', en: 'Dare: Do a 20-second mini karaoke.' } },
+  { id: 5, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is een kleine gewoonte die je leven echt beter maakt?', en: 'Truth: What small habit genuinely improves your life?' } },
+  { id: 6, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Laat je beste "reclame" voor een alledaags item zien.', en: 'Dare: Perform a short ad for an everyday item.' } },
+  { id: 7, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke beslissing maakte je dit jaar trots op jezelf?', en: 'Truth: Which decision this year made you proud of yourself?' } },
+  { id: 8, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 15 seconden een dramatische slow clap.', en: 'Dare: Do a dramatic 15-second slow clap.' } },
+  { id: 9, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is een talent dat mensen vaak niet van je weten?', en: 'Truth: What is a talent people often do not know you have?' } },
+  { id: 10, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Maak een korte imitatie van een bekende stem.', en: 'Dare: Do a quick impression of a famous voice.' } },
+  { id: 11, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat was je leukste reis ooit?', en: 'Truth: What was your best trip ever?' } },
+  { id: 12, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Geef iemand een verrassend compliment.', en: 'Dare: Give someone a surprising compliment.' } },
+  { id: 13, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is je favoriete manier om te ontspannen na een drukke dag?', en: 'Truth: What is your favorite way to unwind after a busy day?' } },
+  { id: 14, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe een korte imitatie van een radio DJ.', en: 'Dare: Do a quick impression of a radio DJ.' } },
+  { id: 15, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke vaardigheid wil je volgend jaar leren?', en: 'Truth: Which skill do you want to learn next year?' } },
+  { id: 16, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Vertel een 10-seconden spannend verhaal.', en: 'Dare: Tell a 10-second suspense story.' } },
+  { id: 17, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is het beste advies dat je ooit kreeg?', en: 'Truth: What is the best advice you ever received?' } },
+  { id: 18, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 20 seconden alsof je een fitnesscoach bent.', en: 'Dare: Act like a fitness coach for 20 seconds.' } },
+  { id: 19, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke gewoonte wil je dit jaar afleren?', en: 'Truth: Which habit do you want to break this year?' } },
+  { id: 20, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Geef een korte TED-talk over iets dat je leuk vindt.', en: 'Dare: Give a short TED-talk about something you like.' } },
+  { id: 21, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is een hobby die je opnieuw wilt oppakken?', en: 'Truth: What hobby do you want to pick up again?' } },
+  { id: 22, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 10 seconden een superheldenpose.', en: 'Dare: Do a superhero pose for 10 seconds.' } },
+  { id: 23, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is je favoriete manier om te leren?', en: 'Truth: What is your favorite way to learn?' } },
+  { id: 24, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Zing een regel uit een lied dat je goed kent.', en: 'Dare: Sing one line from a song you know well.' } },
+  { id: 25, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke traditie wil je behouden?', en: 'Truth: Which tradition do you want to keep?' } },
+  { id: 26, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Speel 15 seconden luchtgitaar.', en: 'Dare: Air-guitar for 15 seconds.' } },
+  { id: 27, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat vind je het leukste aan je werk of studie?', en: 'Truth: What do you enjoy most about your work or study?' } },
+  { id: 28, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Geef een neppe weather forecast.', en: 'Dare: Give a fake weather forecast.' } },
+  { id: 29, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke plek wil je ooit nog bezoeken?', en: 'Truth: Which place do you still want to visit?' } },
+  { id: 30, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 10 seconden een slow-motion entree.', en: 'Dare: Make a 10-second slow-motion entrance.' } },
+  { id: 31, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke kleine luxe gun je jezelf het liefst?', en: 'Truth: Which small luxury do you treat yourself to?' } },
+  { id: 32, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 15 seconden alsof je een stand-up comedian bent.', en: 'Dare: Act like a stand-up comedian for 15 seconds.' } },
+  { id: 33, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke eigenschap waardeer je het meest in vrienden?', en: 'Truth: Which trait do you value most in friends?' } },
+  { id: 34, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Geef iemand een high five met flair.', en: 'Dare: Give someone a high five with flair.' } },
+  { id: 35, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is een kleine verandering die je leven beter maakte?', en: 'Truth: What is a small change that made your life better?' } },
+  { id: 36, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 20 seconden alsof je een sportcommentator bent.', en: 'Dare: Act like a sports commentator for 20 seconds.' } },
+  { id: 37, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat zou je doen met een extra vrije dag per week?', en: 'Truth: What would you do with one extra free day per week?' } },
+  { id: 38, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 10 seconden een over-the-top ontvangst alsof je host bent.', en: 'Dare: Do a 10-second over-the-top welcome like a host.' } },
+  { id: 39, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke vaardigheid bewonder je bij iemand anders?', en: 'Truth: Which skill do you admire in someone else?' } },
+  { id: 40, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Maak 10 seconden een filmtrailer-stem.', en: 'Dare: Do a 10-second movie trailer voice.' } },
+  { id: 41, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke gewoonte probeer je in stand te houden?', en: 'Truth: Which habit are you trying to keep up?' } },
+  { id: 42, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 10 seconden een slow-motion high five.', en: 'Dare: Do a 10-second slow-motion high five.' } },
+  { id: 43, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is een project waar je graag aan zou werken?', en: 'Truth: What is a project you would like to work on?' } },
+  { id: 44, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Maak 15 seconden een overdreven reclamespot.', en: 'Dare: Perform a 15-second over-the-top commercial.' } },
+  { id: 45, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is je favoriete manier om tijd met vrienden door te brengen?', en: 'Truth: What is your favorite way to spend time with friends?' } },
+  { id: 46, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 10 seconden alsof je een detective bent.', en: 'Dare: Act like a detective for 10 seconds.' } },
+  { id: 47, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Welke vaardigheid zou je willen doorgeven aan iemand anders?', en: 'Truth: Which skill would you like to pass on to someone else?' } },
+  { id: 48, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 15 seconden alsof je een regisseur bent op een filmset.', en: 'Dare: Act like a director on a film set for 15 seconds.' } },
+  { id: 49, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Waarheid: Wat is een onderwerp waar je uren over kunt praten?', en: 'Truth: What topic could you talk about for hours?' } },
+  { id: 50, category: { nl: 'Waarheid of Durf', en: 'Truth or Dare' }, question: { nl: 'Durf: Doe 15 seconden alsof je een sportcoach bent.', en: 'Dare: Act like a sports coach for 15 seconds.' } },
+];
+
 const questionPools = [
   {
     id: 'christmas',
@@ -253,15 +359,18 @@ const questionPools = [
     id: 'trivia',
     name: { nl: 'Trivia', en: 'Trivia' },
     questions: triviaQuestions,
+    questionsAdults: triviaAdultQuestions,
   },
   {
     id: 'truth-or-dare',
     name: { nl: 'Waarheid of Durf', en: 'Truth or Dare' },
     questions: truthOrDareQuestions,
+    questionsAdults: truthOrDareAdultQuestions,
   },
 ] as const;
 
 export type QuestionPoolId = (typeof questionPools)[number]['id'];
+export type QuestionAudience = 'kids' | 'adults';
 
 export function getQuestionPools(language: Language) {
   return questionPools.map((pool) => ({
@@ -270,11 +379,19 @@ export function getQuestionPools(language: Language) {
   }));
 }
 
-export function getQuestions(language: Language, poolId: QuestionPoolId = 'christmas'): Question[] {
+export function getQuestions(
+  language: Language,
+  poolId: QuestionPoolId = 'christmas',
+  audience: QuestionAudience = 'kids'
+): Question[] {
   const selectedPool =
     questionPools.find((pool) => pool.id === poolId) ?? questionPools[0];
+  const sourceQuestions =
+    audience === 'adults' && 'questionsAdults' in selectedPool && selectedPool.questionsAdults
+      ? selectedPool.questionsAdults
+      : selectedPool.questions;
 
-  return selectedPool.questions.map((q) => ({
+  return sourceQuestions.map((q) => ({
     id: q.id,
     category: q.category[language],
     question: q.question[language],

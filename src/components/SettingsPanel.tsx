@@ -19,6 +19,8 @@ interface SettingsPanelProps {
   questionPools: { id: string; name: string }[];
   selectedQuestionPoolId: string;
   onQuestionPoolChange: (value: string) => void;
+  questionAudience: 'kids' | 'adults';
+  onQuestionAudienceChange: (value: 'kids' | 'adults') => void;
   players: { name: string }[];
   onPlayerNameChange: (index: number, name: string) => void;
   onPlayerAdd: () => void;
@@ -44,6 +46,8 @@ const SettingsPanel = ({
   questionPools,
   selectedQuestionPoolId,
   onQuestionPoolChange,
+  questionAudience,
+  onQuestionAudienceChange,
   players,
   onPlayerNameChange,
   onPlayerAdd,
@@ -104,6 +108,23 @@ const SettingsPanel = ({
               ))}
             </select>
           </div>
+
+          {(selectedQuestionPoolId === 'trivia' || selectedQuestionPoolId === 'truth-or-dare') && (
+            <div className="w-full flex items-center justify-between gap-4 p-4 rounded-xl bg-card-foreground/5">
+              <div className="text-card-foreground flex flex-col">
+                <span className="font-semibold text-sm">{t(language, 'audienceLabel')}</span>
+                <span className="text-xs text-card-foreground/60">{t(language, 'audienceSub')}</span>
+              </div>
+              <select
+                value={questionAudience}
+                onChange={(e) => onQuestionAudienceChange(e.target.value as 'kids' | 'adults')}
+                className="rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                <option value="kids">{t(language, 'audienceKids')}</option>
+                <option value="adults">{t(language, 'audienceAdults')}</option>
+              </select>
+            </div>
+          )}
 
           {/* Gifts toggle */}
           <div className="w-full flex items-center justify-between gap-4 p-4 rounded-xl bg-card-foreground/5">

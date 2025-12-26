@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getQuestions, getQuestionPools, shuffleArray, Question, QuestionPoolId } from '@/data/questions';
+import { getQuestions, getQuestionPools, shuffleArray, Question, QuestionPoolId, QuestionAudience } from '@/data/questions';
 import Snowflakes from '@/components/Snowflakes';
 import Header from '@/components/Header';
 import QuestionCard from '@/components/QuestionCard';
@@ -47,6 +47,7 @@ const Index = () => {
   const [lootBoxReward, setLootBoxReward] = useState<{ player: string; message: string } | null>(null);
   const [riddleMinutes, setRiddleMinutes] = useState(1);
   const [questionPoolId, setQuestionPoolId] = useState<QuestionPoolId>('christmas');
+  const [questionAudience, setQuestionAudience] = useState<QuestionAudience>('kids');
   const [giftsEnabled, setGiftsEnabled] = useState(true);
 
   const rewardMessages: Record<Language, string[]> = {
@@ -71,12 +72,12 @@ const Index = () => {
   const questionPools = getQuestionPools(language);
 
   const initializeQuestions = useCallback(() => {
-    const bank = getQuestions(language, questionPoolId);
+    const bank = getQuestions(language, questionPoolId, questionAudience);
     const shuffled = shuffleArray(bank);
     setTotalQuestions(bank.length);
     setCurrentQuestion(shuffled[0]);
     setRemainingQuestions(shuffled.slice(1));
-  }, [language, questionPoolId]);
+  }, [language, questionPoolId, questionAudience]);
 
   useEffect(() => {
     initializeQuestions();
@@ -339,8 +340,10 @@ const Index = () => {
           questionPools={questionPools}
           selectedQuestionPoolId={questionPoolId}
           onQuestionPoolChange={(value) => setQuestionPoolId(value as QuestionPoolId)}
-        language={language}
-        onLanguageChange={setLanguage}
+          questionAudience={questionAudience}
+          onQuestionAudienceChange={setQuestionAudience}
+          language={language}
+          onLanguageChange={setLanguage}
         players={players}
         onPlayerNameChange={handlePlayerNameChange}
         onPlayerAdd={handlePlayerAdd}
