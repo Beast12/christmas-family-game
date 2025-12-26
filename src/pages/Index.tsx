@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getQuestions, getQuestionPools, shuffleArray, Question, QuestionPoolId, QuestionAudience } from '@/data/questions';
+import { getQuestions, getQuestionPools, shuffleArray, Question, QuestionAudience } from '@/data/questions';
 import Snowflakes from '@/components/Snowflakes';
 import Header from '@/components/Header';
 import QuestionCard from '@/components/QuestionCard';
@@ -22,6 +22,16 @@ type Player = {
     doubleUsed: boolean;
   };
 };
+
+type CustomPool = {
+  id: string;
+  name: string;
+  questions: Question[];
+  createdAt: string;
+};
+
+const CUSTOM_POOLS_STORAGE = 'customPools';
+const AI_KEY_STORAGE = 'openaiApiKey';
 
 const Index = () => {
   const [players, setPlayers] = useState<Player[]>([
@@ -46,9 +56,25 @@ const Index = () => {
   const [language, setLanguage] = useState<Language>('nl');
   const [lootBoxReward, setLootBoxReward] = useState<{ player: string; message: string } | null>(null);
   const [riddleMinutes, setRiddleMinutes] = useState(1);
-  const [questionPoolId, setQuestionPoolId] = useState<QuestionPoolId>('christmas');
+  const [questionPoolId, setQuestionPoolId] = useState('christmas');
   const [questionAudience, setQuestionAudience] = useState<QuestionAudience>('kids');
   const [giftsEnabled, setGiftsEnabled] = useState(true);
+  const [customPools, setCustomPools] = useState<CustomPool[]>(() => {
+    if (typeof window === 'undefined') return [];
+    const raw = window.localStorage.getItem(CUSTOM_POOLS_STORAGE);
+    if (!raw) return [];
+    try {
+      return JSON.parse(raw) as CustomPool[];
+    } catch {
+      return [];
+    }
+  });
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const [savedApiKey, setSavedApiKey] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return window.localStorage.getItem(AI_KEY_STORAGE) ?? '';
+  });
 
   const rewardMessages: Record<Language, string[]> = {
     nl: [
@@ -70,14 +96,21 @@ const Index = () => {
   };
 
   const questionPools = getQuestionPools(language);
+  const mergedPools = [
+    ...questionPools,
+    ...customPools.map((pool) => ({ id: pool.id, name: pool.name })),
+  ];
 
   const initializeQuestions = useCallback(() => {
-    const bank = getQuestions(language, questionPoolId, questionAudience);
+    const customPool = customPools.find((pool) => pool.id === questionPoolId);
+    const bank = customPool
+      ? customPool.questions
+      : getQuestions(language, questionPoolId as 'christmas' | 'trivia' | 'truth-or-dare', questionAudience);
     const shuffled = shuffleArray(bank);
     setTotalQuestions(bank.length);
     setCurrentQuestion(shuffled[0]);
     setRemainingQuestions(shuffled.slice(1));
-  }, [language, questionPoolId, questionAudience]);
+  }, [language, questionPoolId, questionAudience, customPools]);
 
   useEffect(() => {
     initializeQuestions();
@@ -109,6 +142,11 @@ const Index = () => {
     window.localStorage.setItem('theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem(CUSTOM_POOLS_STORAGE, JSON.stringify(customPools));
+  }, [customPools]);
+
   const handleNextQuestion = () => {
     setCurrentPlayerIndex((prev) => (prev + 1) % players.length);
 
@@ -127,6 +165,119 @@ const Index = () => {
 
   const handleThemeChange = (value: ThemeId) => {
     setTheme(value);
+  };
+
+  const handleRemoveCustomPool = (id: string) => {
+    setCustomPools((prev) => {
+      const next = prev.filter((pool) => pool.id !== id);
+      return next;
+    });
+    if (questionPoolId === id) {
+      setQuestionPoolId('christmas');
+    }
+  };
+
+  const buildAiPrompt = (prompt: string, languageLabel: string) => {
+    return [
+      `Create a set of 50 party-game questions for a family quiz.`,
+      `Language: ${languageLabel}.`,
+      `Questions can be uncensored.`,
+      `Mix categories such as trivia, actions, dilemmas, reflections, or playful challenges.`,
+      `Return JSON only with this shape: {"questions":[{"category":"...","question":"...","answer":"..."}]}.`,
+      `Answers are optional; include them where a fixed answer makes sense.`,
+      `User prompt: ${prompt}`,
+    ].join(' ');
+  };
+
+  const parseAiResponse = (content: string) => {
+    const trimmed = content.trim();
+    const jsonText = trimmed.startsWith('{') || trimmed.startsWith('[')
+      ? trimmed
+      : trimmed.slice(trimmed.indexOf('{'));
+    const parsed = JSON.parse(jsonText);
+    const list = Array.isArray(parsed) ? parsed : parsed.questions;
+    if (!Array.isArray(list)) {
+      throw new Error('Invalid AI response');
+    }
+    return list as Array<{ category?: string; question?: string; answer?: string }>;
+  };
+
+  const handleGenerateAiPool = async (data: {
+    name: string;
+    prompt: string;
+    apiKey: string;
+    rememberKey: boolean;
+  }) => {
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      if (data.rememberKey) {
+        window.localStorage.setItem(AI_KEY_STORAGE, data.apiKey);
+        setSavedApiKey(data.apiKey);
+      } else {
+        window.localStorage.removeItem(AI_KEY_STORAGE);
+        setSavedApiKey('');
+      }
+
+      const languageLabel = language === 'nl' ? 'Dutch' : 'English';
+      const fullPrompt = buildAiPrompt(data.prompt, languageLabel);
+
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${data.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          temperature: 0.8,
+          response_format: { type: 'json_object' },
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are a helpful writer who returns strict JSON only, no markdown.',
+            },
+            { role: 'user', content: fullPrompt },
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('AI request failed');
+      }
+
+      const payload = await response.json();
+      const content = payload?.choices?.[0]?.message?.content ?? '';
+      const rawQuestions = parseAiResponse(content);
+      const mappedQuestions: Question[] = rawQuestions
+        .filter((item) => item.question)
+        .map((item, index) => ({
+          id: index + 1,
+          category: item.category?.trim() || (language === 'nl' ? 'Algemeen' : 'General'),
+          question: item.question?.trim() || '',
+          answer: item.answer?.trim() || undefined,
+        }))
+        .filter((item) => item.question);
+
+      if (mappedQuestions.length === 0) {
+        throw new Error('Empty AI result');
+      }
+
+      const newPool: CustomPool = {
+        id: `custom-${Date.now()}`,
+        name: data.name,
+        questions: mappedQuestions,
+        createdAt: new Date().toISOString(),
+      };
+
+      setCustomPools((prev) => [newPool, ...prev]);
+      setQuestionPoolId(newPool.id as QuestionPoolId);
+    } catch (error) {
+      setAiError('error');
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   const handlePlayerNameChange = (playerIndex: number, name: string) => {
@@ -325,27 +476,33 @@ const Index = () => {
         language={language}
       />
 
-        <SettingsPanel
-          isOpen={settingsOpen}
-          onClose={() => setSettingsOpen(false)}
-          onShuffle={handleShuffle}
+      <SettingsPanel
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        onShuffle={handleShuffle}
         theme={theme}
         onThemeChange={handleThemeChange}
         maxGifts={maxGifts}
         onMaxChange={handleAdjustMaxGifts}
         riddleMinutes={riddleMinutes}
         onRiddleMinutesChange={handleAdjustRiddleMinutes}
-          threshold={threshold}
-          onThresholdChange={handleAdjustThreshold}
-          giftsEnabled={giftsEnabled}
-          onGiftsEnabledChange={setGiftsEnabled}
-          questionPools={questionPools}
-          selectedQuestionPoolId={questionPoolId}
-          onQuestionPoolChange={(value) => setQuestionPoolId(value as QuestionPoolId)}
-          questionAudience={questionAudience}
-          onQuestionAudienceChange={setQuestionAudience}
-          language={language}
-          onLanguageChange={setLanguage}
+        threshold={threshold}
+        onThresholdChange={handleAdjustThreshold}
+        giftsEnabled={giftsEnabled}
+        onGiftsEnabledChange={setGiftsEnabled}
+        questionPools={mergedPools}
+        selectedQuestionPoolId={questionPoolId}
+        onQuestionPoolChange={(value) => setQuestionPoolId(value as QuestionPoolId)}
+        questionAudience={questionAudience}
+        onQuestionAudienceChange={setQuestionAudience}
+        customPools={customPools}
+        onRemoveCustomPool={handleRemoveCustomPool}
+        onGenerateAiPool={handleGenerateAiPool}
+        aiLoading={aiLoading}
+        aiError={aiError}
+        apiKeyPrefill={savedApiKey}
+        language={language}
+        onLanguageChange={setLanguage}
         players={players}
         onPlayerNameChange={handlePlayerNameChange}
         onPlayerAdd={handlePlayerAdd}

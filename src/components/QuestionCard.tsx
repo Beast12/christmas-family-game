@@ -13,7 +13,7 @@ interface QuestionCardProps {
   riddleMinutes: number;
 }
 
-const categoryColors: Record<Question['category'], string> = {
+const categoryColors: Record<string, string> = {
   'Raadsel': 'from-amber-600 to-amber-700',
   'Familie & Herinneringen': 'from-rose-600 to-rose-700',
   'Taak/Actie': 'from-emerald-600 to-emerald-700',
@@ -195,7 +195,11 @@ const QuestionCard = ({
       {/* Category badge */}
       <div className="flex justify-center mb-6 mt-4">
         <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/90 text-card-foreground shadow-[0_6px_16px_rgba(0,0,0,0.25)] border border-border/70">
-          <span className={`w-3 h-3 rounded-full bg-gradient-to-r ${categoryColors[question.category]} shadow-[0_0_6px_rgba(0,0,0,0.3)]`} />
+          <span
+            className={`w-3 h-3 rounded-full bg-gradient-to-r ${
+              categoryColors[question.category] ?? 'from-slate-500 to-slate-700'
+            } shadow-[0_0_6px_rgba(0,0,0,0.3)]`}
+          />
           {question.category}
         </span>
       </div>

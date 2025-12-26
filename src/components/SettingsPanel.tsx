@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { X, Shuffle } from 'lucide-react';
 import { Language, t } from '@/lib/i18n';
 import { ThemeId, themeOptions } from '@/lib/themes';
@@ -21,6 +22,17 @@ interface SettingsPanelProps {
   onQuestionPoolChange: (value: string) => void;
   questionAudience: 'kids' | 'adults';
   onQuestionAudienceChange: (value: 'kids' | 'adults') => void;
+  customPools: { id: string; name: string }[];
+  onRemoveCustomPool: (id: string) => void;
+  onGenerateAiPool: (data: {
+    name: string;
+    prompt: string;
+    apiKey: string;
+    rememberKey: boolean;
+  }) => void;
+  aiLoading: boolean;
+  aiError: string | null;
+  apiKeyPrefill?: string;
   players: { name: string }[];
   onPlayerNameChange: (index: number, name: string) => void;
   onPlayerAdd: () => void;
@@ -48,6 +60,12 @@ const SettingsPanel = ({
   onQuestionPoolChange,
   questionAudience,
   onQuestionAudienceChange,
+  customPools,
+  onRemoveCustomPool,
+  onGenerateAiPool,
+  aiLoading,
+  aiError,
+  apiKeyPrefill,
   players,
   onPlayerNameChange,
   onPlayerAdd,
@@ -56,6 +74,26 @@ const SettingsPanel = ({
   onLanguageChange,
 }: SettingsPanelProps) => {
   if (!isOpen) return null;
+
+  const [aiPoolName, setAiPoolName] = useState('');
+  const [aiPrompt, setAiPrompt] = useState('');
+  const [aiKey, setAiKey] = useState(apiKeyPrefill ?? '');
+  const [rememberKey, setRememberKey] = useState(!!apiKeyPrefill);
+
+  useEffect(() => {
+    setAiKey(apiKeyPrefill ?? '');
+    setRememberKey(!!apiKeyPrefill);
+  }, [apiKeyPrefill]);
+
+  const handleGenerate = () => {
+    if (!aiPoolName.trim() || !aiPrompt.trim() || !aiKey.trim()) return;
+    onGenerateAiPool({
+      name: aiPoolName.trim(),
+      prompt: aiPrompt.trim(),
+      apiKey: aiKey.trim(),
+      rememberKey,
+    });
+  };
 
   return (
     <div className="fixed inset-0 z-40 flex items-start justify-center p-4 sm:items-center">
@@ -125,6 +163,85 @@ const SettingsPanel = ({
               </select>
             </div>
           )}
+
+          {/* AI pool builder */}
+          <div className="p-4 rounded-xl bg-card-foreground/5 space-y-3">
+            <div className="text-card-foreground flex flex-col">
+              <span className="font-semibold text-sm">{t(language, 'aiPoolTitle')}</span>
+              <span className="text-xs text-card-foreground/60">{t(language, 'aiPoolSub')}</span>
+            </div>
+            <input
+              type="text"
+              value={aiPoolName}
+              onChange={(e) => setAiPoolName(e.target.value)}
+              placeholder={t(language, 'aiPoolNamePlaceholder')}
+              className="w-full rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              aria-label={t(language, 'aiPoolNameLabel')}
+            />
+            <textarea
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              placeholder={t(language, 'aiPoolPromptPlaceholder')}
+              className="w-full min-h-[90px] rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              aria-label={t(language, 'aiPoolPromptLabel')}
+            />
+            <input
+              type="password"
+              value={aiKey}
+              onChange={(e) => setAiKey(e.target.value)}
+              placeholder={t(language, 'aiPoolApiKeyPlaceholder')}
+              className="w-full rounded-lg border border-card-foreground/20 bg-card-foreground/10 px-3 py-2 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              aria-label={t(language, 'aiPoolApiKeyLabel')}
+            />
+            <label className="flex items-center gap-2 text-xs text-card-foreground/70">
+              <input
+                type="checkbox"
+                checked={rememberKey}
+                onChange={(e) => setRememberKey(e.target.checked)}
+                className="h-4 w-4 rounded border border-card-foreground/30 bg-card-foreground/10 text-primary focus:ring-2 focus:ring-accent"
+              />
+              {t(language, 'aiPoolSaveKey')}
+            </label>
+            {aiError && (
+              <div className="text-xs text-red-500">{t(language, 'aiPoolError')}</div>
+            )}
+            <button
+              onClick={handleGenerate}
+              disabled={aiLoading || !aiPoolName.trim() || !aiPrompt.trim() || !aiKey.trim()}
+              className={`w-full rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+                aiLoading || !aiPoolName.trim() || !aiPrompt.trim() || !aiKey.trim()
+                  ? 'bg-card-foreground/5 text-card-foreground/40 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:opacity-90'
+              }`}
+            >
+              {aiLoading ? t(language, 'aiPoolGenerating') : t(language, 'aiPoolGenerate')}
+            </button>
+          </div>
+
+          {/* Custom pools */}
+          <div className="p-4 rounded-xl bg-card-foreground/5 space-y-2">
+            <div className="text-card-foreground flex flex-col">
+              <span className="font-semibold text-sm">{t(language, 'aiPoolListTitle')}</span>
+              <span className="text-xs text-card-foreground/60">{t(language, 'aiPoolListSub')}</span>
+            </div>
+            {customPools.length === 0 ? (
+              <div className="text-xs text-card-foreground/60">{t(language, 'aiPoolListEmpty')}</div>
+            ) : (
+              <div className="space-y-2">
+                {customPools.map((pool) => (
+                  <div key={pool.id} className="flex items-center justify-between gap-2">
+                    <span className="text-sm text-card-foreground">{pool.name}</span>
+                    <button
+                      onClick={() => onRemoveCustomPool(pool.id)}
+                      className="px-2 py-1 rounded-md text-xs font-semibold border border-card-foreground/30 text-card-foreground hover:bg-card-foreground/10"
+                    >
+                      {t(language, 'aiPoolRemove')}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Gifts toggle */}
           <div className="w-full flex items-center justify-between gap-4 p-4 rounded-xl bg-card-foreground/5">
